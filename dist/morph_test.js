@@ -1,24 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const fs_1 = require("fs");
 const ts_morph_1 = require("ts-morph");
-const directory = "__test_resources__";
-(0, fs_1.readdir)(directory, parseFiles);
-function parseFiles(err, files) {
-    if (err !== null) {
-        console.error(err);
-        return;
-    }
-    for (let file of files) {
-        console.log("FILE", file);
-        const project = new ts_morph_1.Project();
-        project.addSourceFileAtPath(`${directory}/${file}`);
-        const source = project.getSourceFile(`${directory}/${file}`);
-        if (source !== undefined) {
-            parse(source);
-        }
-        console.log("\n\n");
-    }
+const project = new ts_morph_1.Project();
+project.addSourceFileAtPath("__test_resources__/BubbleSortAllInOne.tsx");
+const source = project.getSourceFile("__test_resources__/BubbleSortAllInOne.tsx");
+const typer = project.getTypeChecker();
+if (source !== undefined) {
+    parse(source);
 }
 function parse(sourceFile) {
     parseImports(sourceFile);
@@ -69,7 +57,7 @@ function parseVariables(sourceFile) {
     const variables = sourceFile.getVariableDeclarations();
     variables.forEach(v => {
         const aliasTypes = v.getChildrenOfKind(ts_morph_1.SyntaxKind.TypeReference)
-            .map(typeRef => typeRef.getText());
+            .map(typeRef => typeRef.getTypeName().getText());
         if (aliasTypes.length > 0) {
             console.log("  ", v.getName(), ":", aliasTypes[0]);
         }
