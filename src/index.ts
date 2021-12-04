@@ -1,5 +1,5 @@
 import { readdir } from "fs"
-import { Project, PropertySignature, SourceFile, SyntaxKind } from "ts-morph"
+import { Project, PropertySignature, SourceFile, SyntaxKind, TypeFormatFlags } from "ts-morph"
 
 const directory = "__test_resources__"
 readdir(directory, parseFiles)
@@ -26,6 +26,7 @@ function parseFiles(err: NodeJS.ErrnoException | null, files: string[]) {
 function parse(sourceFile: SourceFile) {
     parseImports(sourceFile)
     parseInterfaces(sourceFile)
+    parseClasses(sourceFile)
     parseFunctions(sourceFile)
     parseVariables(sourceFile)
     parseExports(sourceFile)
@@ -35,23 +36,45 @@ function parseImports(sourceFile: SourceFile) {
     console.log("IMPORTS")
     const imports = sourceFile.getImportDeclarations()
     imports.forEach(i => {
-        console.log("  ", i.getNamedImports().map(n => n.getName()))
-        const def = i.getDefaultImport()
-        if (def) {
-            console.log("  ", def.getText())
+        const importModule = i.getModuleSpecifier().getText()
+        const namedImports = i.getNamedImports().map(n => n.getName())
+        const defaultImport = i.getDefaultImport()?.getText()
+
+        if (namedImports.length > 0) {
+            console.log("  ", namedImports, "from", importModule)
+        }
+        if (defaultImport !== undefined) {
+            console.log("  ", defaultImport, "from", importModule)
         }
     })
 }
 
 function parseInterfaces(sourceFile: SourceFile) {
-    console.log("INTERFACE")
+    console.log("INTERFACES")
     const interfaces = sourceFile.getInterfaces()
     interfaces.forEach(i => {
         console.log("  ", i.getName())
         i.getMembers().forEach(m => {
             let memberName = (m as PropertySignature).getName()
-            const memberType = (m as PropertySignature).getType().getText()
+            const memberType = (m as PropertySignature).getType().getText(undefined, TypeFormatFlags.InTypeAlias)
             console.log("    ", memberName, ":", memberType)
+        })
+    })
+}
+
+function parseClasses(sourceFile: SourceFile) {
+    console.log("CLASSES")
+    const classes = sourceFile.getClasses()
+    classes.forEach(c => {
+        console.log("  ", c.getName())
+        console.log("  ", "constructors")
+        c.getConstructors().forEach(con => {
+            const cParams = con.getParameters()
+            cParams.forEach(param => {
+                const name = param.getName()
+                const type = param.getType().getText(undefined, TypeFormatFlags.InTypeAlias)
+                console.log("    ", name, ":", type)
+            })
         })
     })
 }
@@ -61,11 +84,11 @@ function parseFunctions(sourceFile: SourceFile) {
     const functions = sourceFile.getFunctions()
     functions.forEach(f => {
         console.log("  ", f.getName(), f.isExported() ? "[exported]" : "")
-        console.log("    Returns:", f.getReturnType().getText())
+        console.log("    Returns:", f.getReturnType().getText(undefined, TypeFormatFlags.InTypeAlias))
         console.log("    Params:")
         f.getParameters().forEach(p => {
             const pName = p.getName()
-            const pType = p.getType().getText()
+            const pType = p.getType().getText(undefined, TypeFormatFlags.InTypeAlias)
             console.log("      ", pName, ":", pType)
         })
     })
@@ -81,14 +104,14 @@ function parseVariables(sourceFile: SourceFile) {
         if (aliasTypes.length > 0) {
             console.log("  ", v.getName(), ":", aliasTypes[0])
         } else {
-            console.log("  ", v.getName(), ":", v.getType().getApparentType().getText())
+            console.log("  ", v.getName(), ":", v.getType().getText(undefined, TypeFormatFlags.InTypeAlias))
         }
 
         const arrowFunction = v.getInitializerIfKind(SyntaxKind.ArrowFunction)
         if (arrowFunction) {
             arrowFunction.getParameters().forEach(p => {
                 const pName = p.getName()
-                const pType = p.getType().getText()
+                const pType = p.getType().getText(undefined, TypeFormatFlags.InTypeAlias)
                 console.log("      ", pName, ":", pType)
             })
         }
@@ -97,7 +120,7 @@ function parseVariables(sourceFile: SourceFile) {
         if (otherFunction) {
             otherFunction.getParameters().forEach(p => {
                 const pName = p.getName()
-                const pType = p.getType().getText()
+                const pType = p.getType().getText(undefined, TypeFormatFlags.InTypeAlias)
                 console.log("      ", pName, ":", pType)
             })
         }
