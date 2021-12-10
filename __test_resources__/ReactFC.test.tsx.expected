@@ -1,0 +1,62 @@
+import { render, screen } from "@testing-library/react"
+import ReactFC from "./ReactFC"
+
+
+describe("ReactFC Tests", () => {
+    beforeEach(() => {
+        resetMocks()
+    })
+
+    test("Component renders", () => {
+        whenComponentIsRendered()
+        screen.debug()
+    })
+})
+
+let mockReactDependency: jest.Mock
+let mockReactDependencyReturn: JSX.Element
+jest.mock("./ReactFCDependency", () => (_val: any) => mockReactDependency(_val))
+
+let mockUtilitySquareFunction: jest.Mock
+let mockUtilitySquareFunctionReturn: number
+jest.mock("./utilityFunctions", () => ({
+    utilitySquareFunction: (_val: any) => mockUtilitySquareFunction(_val)
+}))
+
+let mockPropContent: string
+
+function resetMocks() {
+    mockReactDependencyReturn = <div data-testid={"mockReactDependency"}/>
+    mockReactDependency = jest.fn(() => mockReactDependencyReturn)
+    mockUtilitySquareFunctionReturn = 1234
+    mockUtilitySquareFunction = jest.fn(() => mockUtilitySquareFunctionReturn)
+    mockPropContent = "mock"
+}
+
+function givenPropContent(given: string) {
+    mockPropContent = given
+}
+
+function whenComponentIsRendered() {
+    return render(
+        <ReactFC
+            content={mockPropContent}
+        />
+    )
+}
+
+function thenReactDependencyIsRendered(expected: boolean) {
+    if (expected) {
+        expect(screen.getByTestId("mockReactDependency")).toBeInTheDocument()
+    } else {
+        expect(screen.queryByTestId("mockReactDependency")).toBeNull()
+    }
+}
+
+function thenReactDependencyWasCalledWith(expected: any) {
+    expect(mockReactDependency).toHaveBeenCalledWith(expected)
+}
+
+function thenUtilitySquareFunctionWasCalledWith(expected: number) {
+    expect(mockUtilitySquareFunction).toHaveBeenCalledWith(expected)
+}

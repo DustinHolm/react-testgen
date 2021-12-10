@@ -1,5 +1,5 @@
 import { Component } from "react"
-import ReactDependency from "./ReactDependency"
+import ReactClassDependency from "./ReactClassDependency"
 import { utilitySquareFunction } from "./utilityFunctions"
 
 
@@ -32,7 +32,7 @@ class ReactClass extends Component<ReactClassProps, ReactClassState> {
             <p>{this.props.content}</p>
             <p>{this.state.count}</p>
             <button onClick={() => this.increase()}>increase count</button>
-            <ReactDependency content={"From ReactClass"} />
+            <ReactClassDependency content={"From ReactClass"} />
         </div>
         )
     }

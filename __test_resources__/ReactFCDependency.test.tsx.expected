@@ -1,0 +1,31 @@
+import { render, screen } from "@testing-library/react"
+import ReactFCDependency from "./ReactFCDependency"
+
+describe("ReactFCDependency Tests", () => {
+    beforeEach(() => {
+        resetMocks()
+    })
+
+    test("Component renders", () => {
+        whenComponentIsRendered()
+        screen.debug()
+    })
+})
+
+let mockPropContent: string
+
+function resetMocks() {
+    mockPropContent = "mock"
+}
+
+function givenPropContent(given: string) {
+    mockPropContent = given
+}
+
+function whenComponentIsRendered() {
+    return render(
+        <ReactFCDependency 
+            content={mockPropContent}
+        />
+    )
+}

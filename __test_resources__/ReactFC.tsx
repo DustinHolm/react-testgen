@@ -1,5 +1,5 @@
 import { FC, useState } from "react"
-import ReactDependency from "./ReactDependency"
+import ReactFCDependency from "./ReactFCDependency"
 import { utilitySquareFunction } from "./utilityFunctions"
 
 
@@ -20,7 +20,7 @@ const ReactFC: FC<ReactFCProps> = (props) => {
             <p>{props.content}</p>
             <p>{count}</p>
             <button onClick={() => increase()}>increase count</button>
-            <ReactDependency content={"From ReactFC"} />
+            <ReactFCDependency content={"From ReactFC"} />
         </div>
     )
 }

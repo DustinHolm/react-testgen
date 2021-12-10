@@ -1,11 +1,11 @@
 import { FC } from "react";
 
 
-interface ReactDependencyProps {
+interface ReactFCDependencyProps {
     content: string
 }
 
-const ReactDependency: FC<ReactDependencyProps> = (props) => {
+const ReactFCDependency: FC<ReactFCDependencyProps> = (props) => {
     return (
         <p>
             This should never be displayed. With props: {props.content}
@@ -13,4 +13,4 @@ const ReactDependency: FC<ReactDependencyProps> = (props) => {
     )
 }
 
-export default ReactDependency
+export default ReactFCDependency
