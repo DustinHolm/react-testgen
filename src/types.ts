@@ -1,13 +1,7 @@
 export interface ImportBlock {
     sourceFile: string,
     isInternal: boolean,
-    imports: Import[]
-}
-
-export interface Import {
-    isDefault: boolean,
-    name: string,
-    element?: ExportableElement
+    imports: Export[]
 }
 
 export interface Export {

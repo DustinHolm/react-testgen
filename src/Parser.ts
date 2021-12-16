@@ -1,5 +1,5 @@
-import { Node, Project, PropertySignature, SourceFile, SyntaxKind, Type, TypeFormatFlags } from "ts-morph"
-import { Attribute, ClassElement, Constructor, Export, ExportType, FunctionElement, Import, ImportBlock, InterfaceElement, MethodElement, VariableElement } from "./types"
+import { Project, PropertySignature, SourceFile, SyntaxKind } from "ts-morph"
+import { Attribute, ClassElement, Constructor, Export, ExportType, FunctionElement, ImportBlock, InterfaceElement, MethodElement, VariableElement } from "./types"
 
 
 class Parser {
@@ -33,7 +33,7 @@ class Parser {
                 imSp.getName())
             const defaultImport = imDe.getDefaultImport()?.getText()
 
-            const imports: Import[] = []
+            const imports: Export[] = []
 
             namedImports.forEach(naIm =>
                 imports.push({
@@ -164,14 +164,14 @@ class Parser {
                     .map(typeRef => typeRef.getText())
                     .shift()
 
-                    
+
                 const variableType = aliasType ?? vaDe.getType().getText()
                 let variableValue = undefined
                 let parameters: Attribute[] | undefined = undefined
                 let returnType: string | undefined = undefined
                 const arrowFunction = vaDe.getInitializerIfKind(SyntaxKind.ArrowFunction)
                 const otherFunction = vaDe.getInitializerIfKind(SyntaxKind.FunctionExpression)
-                
+
                 if (arrowFunction) {
                     returnType = arrowFunction.getReturnType().getText()
 
@@ -180,7 +180,7 @@ class Parser {
                         type: p.getType().getText()
                     }))
                 } else if (otherFunction) {
-                    returnType = otherFunction.getReturnType().getText() 
+                    returnType = otherFunction.getReturnType().getText()
 
                     parameters = otherFunction.getParameters().map(p => ({
                         name: p.getName(),
