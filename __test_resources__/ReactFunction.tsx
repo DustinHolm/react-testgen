@@ -7,7 +7,7 @@ interface ReactFunctionProps {
     content: string
 }
 
-function ReactFunction(props: ReactFunctionProps): JSX.Element {
+function ReactFunction(props: ReactFunctionProps) {
     const [count, setCount] = useState(2)
 
     const increase = () => {

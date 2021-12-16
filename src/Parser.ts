@@ -1,8 +1,11 @@
-import { Project, PropertySignature, SourceFile, SyntaxKind, TypeFormatFlags } from "ts-morph"
+import { Node, Project, PropertySignature, SourceFile, SyntaxKind, Type, TypeFormatFlags } from "ts-morph"
+import { Attribute, ClassElement, Constructor, Export, ExportType, FunctionElement, Import, ImportBlock, InterfaceElement, MethodElement, VariableElement } from "./types"
 
 
-class Parser{
+class Parser {
     source: SourceFile
+    exports: Export[]
+    isExportsParsed: boolean
 
     constructor(path: string) {
         const project = new Project()
@@ -13,114 +16,221 @@ class Parser{
         }
 
         this.source = source
+        this.exports = this.parseExportNames()
+        this.isExportsParsed = false
     }
 
-    parseImports() {
-        console.log("IMPORTS")
-        const imports = this.source.getImportDeclarations()
-        imports.forEach(i => {
-            const importModule = i.getModuleSpecifier().getText()
-            const namedImports = i.getNamedImports().map(n => n.getName())
-            const defaultImport = i.getDefaultImport()?.getText()
-    
-            if (namedImports.length > 0) {
-                console.log("  ", namedImports, "from", importModule)
+    parseImports(): ImportBlock[] {
+        return this.source.getImportDeclarations().map(imDe => {
+            let importModule = imDe.getModuleSpecifier().getText()
+            if (importModule.startsWith("\"") && importModule.endsWith("\"")
+                || importModule.startsWith("\'") && importModule.endsWith("\'")) {
+                importModule = importModule.slice(1, -1)
             }
+            const importModuleIsInternal = importModule.startsWith(".")
+
+            const namedImports = imDe.getNamedImports().map(imSp =>
+                imSp.getName())
+            const defaultImport = imDe.getDefaultImport()?.getText()
+
+            const imports: Import[] = []
+
+            namedImports.forEach(naIm =>
+                imports.push({
+                    name: naIm,
+                    isDefault: false,
+                })
+            )
+
             if (defaultImport !== undefined) {
-                console.log("  ", defaultImport, "from", importModule)
+                imports.push({
+                    name: defaultImport,
+                    isDefault: true,
+                })
+            }
+
+            return {
+                sourceFile: importModule,
+                isInternal: importModuleIsInternal,
+                imports: imports
             }
         })
     }
 
+    parseExports(): Export[] {
+        if (!this.isExportsParsed) {
+            this.parseInterfaces()
+            this.parseClasses()
+            this.parseFunctions()
+            this.parseVariables()
+            this.isExportsParsed = true
+        }
+
+        return this.exports
+    }
+
     parseInterfaces() {
-        console.log("INTERFACES")
-        const interfaces = this.source.getInterfaces()
-        interfaces.forEach(i => {
-            console.log("  ", i.getName())
-            i.getMembers().forEach(m => {
-                let memberName = (m as PropertySignature).getName()
-                const memberType = (m as PropertySignature).getType().getText(undefined, TypeFormatFlags.InTypeAlias)
-                console.log("    ", memberName, ":", memberType)
-            })
+        this.source.getInterfaces().forEach(inDe => {
+            const existingExport = this.exports.find(e => e.name === inDe.getName())
+
+            if (existingExport !== undefined) {
+                const attributes: Attribute[] = inDe.getMembers().map(tyElTy => ({
+                    name: (tyElTy as PropertySignature).getName(),
+                    type: tyElTy.getType().getText()
+                }))
+
+                existingExport.element = {
+                    returnsJSX: false,
+                    type: ExportType.Interface,
+                    attributes: attributes
+                } as InterfaceElement
+            }
         })
     }
 
     parseClasses() {
-        console.log("CLASSES")
-        const classes = this.source.getClasses()
-        classes.forEach(c => {
-            console.log("  ", c.getName())
-            console.log("  ", "constructors")
-            c.getConstructors().forEach(con => {
-                const cParams = con.getParameters()
-                cParams.forEach(param => {
-                    const name = param.getName()
-                    const type = param.getType().getText(undefined, TypeFormatFlags.InTypeAlias)
-                    console.log("    ", name, ":", type)
+        this.source.getClasses().forEach(clDe => {
+            const existingExport = this.exports.find(e => e.name === clDe.getName())
+
+            if (existingExport !== undefined) {
+                const constructors: Constructor[] = clDe.getConstructors().map(coDe => {
+                    const attributes: Attribute[] = coDe.getParameters().map(p => ({
+                        name: p.getName(),
+                        type: p.getType().getText()
+                    }))
+
+                    return {
+                        parameters: attributes
+                    }
                 })
-            })
+
+
+                const methods = clDe.getMethods().map(meDe => {
+                    const name = meDe.getName()
+                    const returnType = meDe.getReturnType().getText()
+
+                    const parameters: Attribute[] = meDe.getParameters().map(paDe => ({
+                        name: paDe.getName(),
+                        type: paDe.getType().getText()
+                    }))
+
+                    return {
+                        returnsJSX: returnType.includes("JSX"),
+                        type: ExportType.Function,
+                        returnType: returnType,
+                        parameters: parameters,
+                        name: name
+                    } as MethodElement
+                })
+
+                existingExport.element = {
+                    returnsJSX: methods.some(m => m.returnsJSX),
+                    type: ExportType.Class,
+                    methods: methods,
+                    constructors: constructors
+                } as ClassElement
+            }
         })
     }
 
     parseFunctions() {
-        console.log("FUNCTIONS")
-        const functions = this.source.getFunctions()
-        functions.forEach(f => {
-            console.log("  ", f.getName(), f.isExported() ? "[exported]" : "")
-            console.log("    Returns:", f.getReturnType().getText(undefined, TypeFormatFlags.InTypeAlias))
-            console.log("    Params:")
-            f.getParameters().forEach(p => {
-                const pName = p.getName()
-                const pType = p.getType().getText(undefined, TypeFormatFlags.InTypeAlias)
-                console.log("      ", pName, ":", pType)
-            })
+        this.source.getFunctions().forEach(fuDe => {
+            const existingExport = this.exports.find(e => e.name === fuDe.getName())
+
+            if (existingExport !== undefined) {
+                const returnType = fuDe.getReturnType().getText()
+
+                const parameters: Attribute[] = fuDe.getParameters().map(paDe => ({
+                    name: paDe.getName(),
+                    type: paDe.getType().getText()
+                }))
+
+                existingExport.element = {
+                    returnsJSX: returnType.includes("JSX"),
+                    type: ExportType.Function,
+                    returnType: returnType,
+                    parameters: parameters
+                } as FunctionElement
+            }
         })
     }
 
     parseVariables() {
-        console.log("VARIABLES")
-        const variables = this.source.getVariableDeclarations()
-        variables.forEach(v => {
-            const aliasTypes = v.getChildrenOfKind(SyntaxKind.TypeReference)
-                .map(typeRef => typeRef.getText())
-    
-            if (aliasTypes.length > 0) {
-                console.log("  ", v.getName(), ":", aliasTypes[0])
-            } else {
-                console.log("  ", v.getName(), ":", v.getType().getText(undefined, TypeFormatFlags.InTypeAlias))
+        this.source.getVariableDeclarations().forEach(vaDe => {
+            const existingExport = this.exports.find(e => e.name === vaDe.getName())
+
+            if (existingExport !== undefined) {
+                const aliasType = vaDe.getChildrenOfKind(SyntaxKind.TypeReference)
+                    .map(typeRef => typeRef.getText())
+                    .shift()
+
+                    
+                const variableType = aliasType ?? vaDe.getType().getText()
+                let variableValue = undefined
+                let parameters: Attribute[] | undefined = undefined
+                let returnType: string | undefined = undefined
+                const arrowFunction = vaDe.getInitializerIfKind(SyntaxKind.ArrowFunction)
+                const otherFunction = vaDe.getInitializerIfKind(SyntaxKind.FunctionExpression)
+                
+                if (arrowFunction) {
+                    returnType = arrowFunction.getReturnType().getText()
+
+                    parameters = arrowFunction.getParameters().map(p => ({
+                        name: p.getName(),
+                        type: p.getType().getText()
+                    }))
+                } else if (otherFunction) {
+                    returnType = otherFunction.getReturnType().getText() 
+
+                    parameters = otherFunction.getParameters().map(p => ({
+                        name: p.getName(),
+                        type: p.getType().getText()
+                    }))
+                } else {
+                    variableValue = vaDe.getInitializer()?.getText()
+                }
+
+                if (parameters !== undefined && returnType !== undefined) {
+                    existingExport.element = {
+                        returnsJSX: returnType.includes("JSX"),
+                        type: ExportType.Function,
+                        returnType: returnType,
+                        parameters: parameters
+                    } as FunctionElement
+                } else {
+                    existingExport.element = {
+                        returnsJSX: variableType.includes("JSX"),
+                        type: ExportType.Variable,
+                        varType: variableType,
+                        varValue: variableValue ?? "undefined"
+                    } as VariableElement
+                }
             }
-    
-            const arrowFunction = v.getInitializerIfKind(SyntaxKind.ArrowFunction)
-            if (arrowFunction) {
-                arrowFunction.getParameters().forEach(p => {
-                    const pName = p.getName()
-                    const pType = p.getType().getText(undefined, TypeFormatFlags.InTypeAlias)
-                    console.log("      ", pName, ":", pType)
-                })
-            }
-    
-            const otherFunction = v.getInitializerIfKind(SyntaxKind.FunctionExpression)
-            if (otherFunction) {
-                otherFunction.getParameters().forEach(p => {
-                    const pName = p.getName()
-                    const pType = p.getType().getText(undefined, TypeFormatFlags.InTypeAlias)
-                    console.log("      ", pName, ":", pType)
-                })
-            }
-    
         })
     }
 
-    parseExports() {
-        console.log("EXPORTS")
+    private parseExportNames(): Export[] {
         const defaultExports = this.source.getExportAssignments()
-        const exports = this.source.getExportSymbols()
-        defaultExports.forEach(e => {
-            console.log("  ", e.getExpression().getText())
+        const exportSymbols = this.source.getExportSymbols()
+        const exportNames: Export[] = []
+
+        defaultExports.forEach(exAs => {
+            exportNames.push({
+                name: exAs.getExpression().getText(),
+                isDefault: true
+            })
         })
-        exports.forEach(e => {
-            console.log("  ", e.getName())
+
+        exportSymbols.forEach(exSy => {
+            if (exSy.getName() !== "default") {
+                exportNames.push({
+                    name: exSy.getName(),
+                    isDefault: false
+                })
+            }
         })
+
+        return exportNames
     }
 }
 

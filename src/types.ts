@@ -1,15 +1,19 @@
+export interface ImportBlock {
+    sourceFile: string,
+    isInternal: boolean,
+    imports: Import[]
+}
+
 export interface Import {
     isDefault: boolean,
-    sourceFile: string,
     name: string,
-    isInternal: boolean,
     element?: ExportableElement
 }
 
 export interface Export {
+    name: string,
     isDefault: boolean,
-    type: ExportType,
-    element: ExportableElement
+    element?: ExportableElement
 }
 
 export enum ExportType {
@@ -20,12 +24,17 @@ export enum ExportType {
 }
 
 export interface ExportableElement {
-    name: string,
+    type: ExportType,
     returnsJSX: boolean
 }
 
 export interface ClassElement extends ExportableElement {
-    constructor: Attribute[]
+    methods: MethodElement[],
+    constructors: Constructor[]
+}
+
+export interface MethodElement extends FunctionElement {
+    name: string
 }
 
 export interface FunctionElement extends ExportableElement {
@@ -38,11 +47,15 @@ export interface InterfaceElement extends ExportableElement {
 }
 
 export interface VariableElement extends ExportableElement {
-    type: string,
-    arrowFunction?: FunctionElement
+    varType: string,
+    varValue: string
 }
 
 export interface Attribute {
     name: string,
     type: string
+}
+
+export interface Constructor {
+    parameters: Attribute[]
 }
