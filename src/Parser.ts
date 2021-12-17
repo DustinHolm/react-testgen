@@ -1,3 +1,4 @@
+import { existsSync } from "fs"
 import { Project, PropertySignature, SourceFile, SyntaxKind } from "ts-morph"
 import { Attribute, ClassElement, Constructor, Export, ExportType, FunctionElement, ImportBlock, InterfaceElement, MethodElement, VariableElement } from "./types"
 
@@ -49,6 +50,20 @@ class Parser {
                 })
             }
 
+            if (importModuleIsInternal) {
+                const path = this.source.getDirectoryPath() + importModule.slice(1)
+                const fileExtension = existsSync(path + ".tsx") ? ".tsx" : ".ts"
+                if (fileExtension === ".ts" && !existsSync(path + fileExtension)) {
+                    throw Error(`This import was not found: ${path + fileExtension}`)
+                }
+                const importParser = new Parser(path + fileExtension)
+                const importExports = importParser.parseExports()
+
+                imports.forEach(i => {
+                    i.element = importExports.find(e => e.name === i.name)?.element
+                })
+            }
+
             return {
                 sourceFile: importModule,
                 isInternal: importModuleIsInternal,
@@ -69,7 +84,7 @@ class Parser {
         return this.exports
     }
 
-    parseInterfaces() {
+    private parseInterfaces() {
         this.source.getInterfaces().forEach(inDe => {
             const existingExport = this.exports.find(e => e.name === inDe.getName())
 
@@ -88,7 +103,7 @@ class Parser {
         })
     }
 
-    parseClasses() {
+    private parseClasses() {
         this.source.getClasses().forEach(clDe => {
             const existingExport = this.exports.find(e => e.name === clDe.getName())
 
@@ -133,7 +148,7 @@ class Parser {
         })
     }
 
-    parseFunctions() {
+    private parseFunctions() {
         this.source.getFunctions().forEach(fuDe => {
             const existingExport = this.exports.find(e => e.name === fuDe.getName())
 
@@ -155,7 +170,7 @@ class Parser {
         })
     }
 
-    parseVariables() {
+    private parseVariables() {
         this.source.getVariableDeclarations().forEach(vaDe => {
             const existingExport = this.exports.find(e => e.name === vaDe.getName())
 

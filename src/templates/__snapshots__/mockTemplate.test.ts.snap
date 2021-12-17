@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mockTemplate Tests With default function 1`] = `
+"let mockDefaultTest: jest.Mock
+let mockDefaultTestReturn: mockReturn
+function resetMockDefaultTest() {
+
+}
+jest.mock(\\"./mock\\", () => ({
+    __esmodule: true,
+    defaultTest: (_val: any) => mockDefaultTest(_val),
+})
+"
+`;
+
+exports[`mockTemplate Tests With mixed functions 1`] = `
+"let mockNamedTest: jest.Mock
+let mockNamedTestReturn: mockReturn
+function resetMockNamedTest() {
+
+}
+let mockDefaultTest: jest.Mock
+let mockDefaultTestReturn: mockReturn
+function resetMockDefaultTest() {
+
+}
+jest.mock(\\"./mock\\", () => ({
+    namedTest: (_val: any) => mockNamedTest(_val),
+    __esmodule: true,
+    defaultTest: (_val: any) => mockDefaultTest(_val),
+})
+"
+`;
+
+exports[`mockTemplate Tests With multiple named functions 1`] = `
+"let mockNamedTest_1: jest.Mock
+let mockNamedTest_1Return: mockReturn
+function resetMockNamedTest_1() {
+
+}
+let mockNamedTest_2: jest.Mock
+let mockNamedTest_2Return: mockReturn
+function resetMockNamedTest_2() {
+
+}
+jest.mock(\\"./mock\\", () => ({
+    namedTest_1: (_val: any) => mockNamedTest_1(_val),
+    namedTest_2: (_val: any) => mockNamedTest_2(_val),
+})
+"
+`;
+
+exports[`mockTemplate Tests With named function 1`] = `
+"let mockNamedTest: jest.Mock
+let mockNamedTestReturn: mockReturn
+function resetMockNamedTest() {
+
+}
+jest.mock(\\"./mock\\", () => ({
+    namedTest: (_val: any) => mockNamedTest(_val),
+})
+"
+`;

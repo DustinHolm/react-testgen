@@ -12,7 +12,6 @@ function parseFiles(err: NodeJS.ErrnoException | null, files: string[]) {
     }
 
     for (let file of files) {
-        if (file !== "ReactFC.tsx") continue
         console.log("FILE", file)
         if (!file.endsWith(".tsx") || file.endsWith(".test.tsx")) continue
         try {
