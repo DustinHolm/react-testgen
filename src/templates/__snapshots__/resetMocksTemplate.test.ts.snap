@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`resetMocksTemplate Tests With mixed inputs 1`] = `
+"function resetMocks() {
+    resetMockPropAtt_1()
+    resetMockPropAtt_2()
+    resetMockImport_0()
+    resetMockImport_1()
+}
+"
+`;
+
+exports[`resetMocksTemplate Tests With one mocked import block 1`] = `
+"function resetMocks() {
+    resetMockImport_0()
+    resetMockImport_1()
+}
+"
+`;
+
+exports[`resetMocksTemplate Tests With only props 1`] = `
+"function resetMocks() {
+    resetMockPropAtt_1()
+    resetMockPropAtt_2()
+}
+"
+`;
+
+exports[`resetMocksTemplate Tests With two mocked import blocks 1`] = `
+"function resetMocks() {
+    resetMockImport_0()
+    resetMockImport_0()
+}
+"
+`;

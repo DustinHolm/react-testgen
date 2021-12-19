@@ -2,8 +2,9 @@ import { Component } from "react"
 import ReactClassDependency from "./ReactClassDependency"
 import { utilitySquareFunction } from "./utilityFunctions"
 
+export const initialStateCount: number = 2
 
-interface ReactClassProps {
+export interface ReactClassProps {
     content: string
 }
 
@@ -15,7 +16,7 @@ class ReactClass extends Component<ReactClassProps, ReactClassState> {
     constructor(props: ReactClassProps) {
         super(props);
         this.state = {
-            count: 2
+            count: initialStateCount
         }
     }
 

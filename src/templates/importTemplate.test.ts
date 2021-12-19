@@ -2,80 +2,52 @@ import { ImportBlock } from "../types"
 import { createImport } from "./importTemplate"
 
 describe("importTemplate Tests", () => {
-    test("With empty filename", () => {
-        const returnedString = createImport({
-            sourceFile: "",
-            isInternal: true,
-            imports: [{name: "MockDefault", isDefault: true}]
-        })
+    let givenBlock: ImportBlock
 
-        expect(returnedString).toBeUndefined()
+    beforeEach(() => {
+        givenBlock = {
+            sourceFile: "./test",
+            isInternal: true,
+            imports: []
+        }
     })
 
-    test("With blank filename", () => {
-        const returnedString = createImport({
-            sourceFile: "   ",
-            isInternal: true,
-            imports: [{name: "MockDefault", isDefault: true}]
-        })
+    test("With only default import", () => {
+        givenBlock.imports.push({ name: "TestDefault", isDefault: true })
+        const returnedString = createImport(givenBlock)
 
-        expect(returnedString).toBeUndefined()
+        expect(returnedString).toMatchSnapshot()
     })
 
-    describe("Given correct ImportBlock", () => {
-        let givenBlock: ImportBlock
+    test("With only one named import", () => {
+        givenBlock.imports.push({ name: "TestNamed", isDefault: false })
+        const returnedString = createImport(givenBlock)
 
-        beforeEach(() => {
-            givenBlock = {
-                sourceFile: "./test",
-                isInternal: true,
-                imports: []
-            }
-        })
+        expect(returnedString).toMatchSnapshot()
+    })
 
-        test("With only default import", () => {
-            givenBlock.imports.push({name: "MockDefault", isDefault: true})
-            const returnedString = createImport(givenBlock)
+    test("With only multiple named imports", () => {
+        givenBlock.imports.push({ name: "TestNamed_1", isDefault: false })
+        givenBlock.imports.push({ name: "TestNamed_2", isDefault: false })
+        const returnedString = createImport(givenBlock)
 
-            expect(returnedString).toMatchSnapshot()
-        })
+        expect(returnedString).toMatchSnapshot()
+    })
 
-        test("With only one named import", () => {
-            givenBlock.imports.push({name: "MockNamed", isDefault: false})
-            const returnedString = createImport(givenBlock)
+    test("With only multiple unsorted named imports", () => {
+        givenBlock.imports.push({ name: "TestNamed_2", isDefault: false })
+        givenBlock.imports.push({ name: "TestNamed_1", isDefault: false })
+        const returnedString = createImport(givenBlock)
 
-            expect(returnedString).toMatchSnapshot()
-        })
+        expect(returnedString).toMatchSnapshot()
+    })
 
-        test("With only multiple named imports", () => {
-            givenBlock.imports.push({name: "MockNamed_1", isDefault: false})
-            givenBlock.imports.push({name: "MockNamed_2", isDefault: false})
-            const returnedString = createImport(givenBlock)
+    test("With mixed imports", () => {
+        givenBlock.imports.push({ name: "TestDefault", isDefault: true })
+        givenBlock.imports.push({ name: "TestNamed_1", isDefault: false })
+        givenBlock.imports.push({ name: "TestNamed_2", isDefault: false })
+        const returnedString = createImport(givenBlock)
 
-            expect(returnedString).toMatchSnapshot()
-        })
-
-        test("With only multiple unsorted named imports", () => {
-            givenBlock.imports.push({name: "MockNamed_2", isDefault: false})
-            givenBlock.imports.push({name: "MockNamed_1", isDefault: false})
-            const returnedString = createImport(givenBlock)
-
-            expect(returnedString).toMatchSnapshot()
-        })
-
-        test("With mixed imports", () => {
-            givenBlock.imports.push({name: "MockDefault", isDefault: true})
-            givenBlock.imports.push({name: "MockNamed_1", isDefault: false})
-            givenBlock.imports.push({name: "MockNamed_2", isDefault: false})
-            const returnedString = createImport(givenBlock)
-
-            expect(returnedString).toMatchSnapshot()
-        })
-
-        test("With no imports", () => {
-            const returnedString = createImport(givenBlock)
-
-            expect(returnedString).toBeUndefined()
-        })
+        expect(returnedString).toMatchSnapshot()
     })
 })

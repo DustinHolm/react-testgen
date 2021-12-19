@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`defaultValuesTemplate Tests createFunctionDefaults Tests With name 1`] = `
+"    testReturn = undefined //TODO: Set this manually
+    test = jest.fn(() => testReturn)"
+`;
+
+exports[`defaultValuesTemplate Tests createJSXDefaults Tests With name 1`] = `
+"    testReturn = <span data-testid={\\"test\\"} />
+    test = jest.fn(() => testReturn)"
+`;

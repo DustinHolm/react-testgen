@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`describeBlockTemplate Tests With name 1`] = `
+"describe(\\"test Tests\\", () => {
+    beforeEach(() => {
+        resetMocks()
+    })
+
+    test(\\"Component renders\\", () => {
+        whenComponentIsRendered()
+        screen.debug()
+    })
+})
+"
+`;

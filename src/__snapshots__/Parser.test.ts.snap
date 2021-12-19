@@ -1,0 +1,416 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Parser Tests ReactClass matches snapshot 1`] = `
+Object {
+  "exports": Array [
+    Object {
+      "element": Object {
+        "constructors": Array [
+          Object {
+            "parameters": Array [
+              Object {
+                "name": "props",
+                "type": "import(\\"/media/dustin/Data/Code/react-testgen/__test_resources__/ReactClass\\").ReactClassProps",
+              },
+            ],
+          },
+        ],
+        "methods": Array [
+          Object {
+            "name": "increase",
+            "parameters": Array [],
+            "returnType": "void",
+            "returnsJSX": false,
+            "type": 1,
+          },
+          Object {
+            "name": "render",
+            "parameters": Array [],
+            "returnType": "JSX.Element",
+            "returnsJSX": true,
+            "type": 1,
+          },
+        ],
+        "returnsJSX": true,
+        "type": 0,
+      },
+      "isDefault": true,
+      "name": "ReactClass",
+    },
+    Object {
+      "element": Object {
+        "returnsJSX": false,
+        "type": 3,
+        "varType": "number",
+        "varValue": "2",
+      },
+      "isDefault": false,
+      "name": "initialStateCount",
+    },
+    Object {
+      "element": Object {
+        "attributes": Array [
+          Object {
+            "name": "content",
+            "type": "string",
+          },
+        ],
+        "returnsJSX": false,
+        "type": 2,
+      },
+      "isDefault": false,
+      "name": "ReactClassProps",
+    },
+  ],
+  "imports": Array [
+    Object {
+      "imports": Array [
+        Object {
+          "isDefault": false,
+          "name": "Component",
+        },
+      ],
+      "isInternal": false,
+      "sourceFile": "react",
+    },
+    Object {
+      "imports": Array [
+        Object {
+          "element": Object {
+            "constructors": Array [
+              Object {
+                "parameters": Array [
+                  Object {
+                    "name": "props",
+                    "type": "ReactClassDependencyProps",
+                  },
+                ],
+              },
+            ],
+            "methods": Array [
+              Object {
+                "name": "render",
+                "parameters": Array [],
+                "returnType": "JSX.Element",
+                "returnsJSX": true,
+                "type": 1,
+              },
+            ],
+            "returnsJSX": true,
+            "type": 0,
+          },
+          "isDefault": true,
+          "name": "ReactClassDependency",
+        },
+      ],
+      "isInternal": true,
+      "sourceFile": "./ReactClassDependency",
+    },
+    Object {
+      "imports": Array [
+        Object {
+          "element": Object {
+            "parameters": Array [
+              Object {
+                "name": "value",
+                "type": "number",
+              },
+            ],
+            "returnType": "number",
+            "returnsJSX": false,
+            "type": 1,
+          },
+          "isDefault": false,
+          "name": "utilitySquareFunction",
+        },
+      ],
+      "isInternal": true,
+      "sourceFile": "./utilityFunctions",
+    },
+  ],
+}
+`;
+
+exports[`Parser Tests ReactClassDependency matches snapshot 1`] = `
+Object {
+  "exports": Array [
+    Object {
+      "element": Object {
+        "constructors": Array [
+          Object {
+            "parameters": Array [
+              Object {
+                "name": "props",
+                "type": "ReactClassDependencyProps",
+              },
+            ],
+          },
+        ],
+        "methods": Array [
+          Object {
+            "name": "render",
+            "parameters": Array [],
+            "returnType": "JSX.Element",
+            "returnsJSX": true,
+            "type": 1,
+          },
+        ],
+        "returnsJSX": true,
+        "type": 0,
+      },
+      "isDefault": true,
+      "name": "ReactClassDependency",
+    },
+  ],
+  "imports": Array [
+    Object {
+      "imports": Array [
+        Object {
+          "isDefault": false,
+          "name": "Component",
+        },
+      ],
+      "isInternal": false,
+      "sourceFile": "react",
+    },
+  ],
+}
+`;
+
+exports[`Parser Tests ReactFC matches snapshot 1`] = `
+Object {
+  "exports": Array [
+    Object {
+      "element": Object {
+        "parameters": Array [
+          Object {
+            "name": "props",
+            "type": "React.PropsWithChildren<import(\\"/media/dustin/Data/Code/react-testgen/__test_resources__/ReactFC\\").ReactFCProps>",
+          },
+        ],
+        "returnType": "JSX.Element",
+        "returnsJSX": true,
+        "type": 1,
+      },
+      "isDefault": true,
+      "name": "ReactFC",
+    },
+    Object {
+      "element": Object {
+        "returnsJSX": false,
+        "type": 3,
+        "varType": "number",
+        "varValue": "2",
+      },
+      "isDefault": false,
+      "name": "initialStateCount",
+    },
+    Object {
+      "element": Object {
+        "attributes": Array [
+          Object {
+            "name": "content",
+            "type": "string",
+          },
+        ],
+        "returnsJSX": false,
+        "type": 2,
+      },
+      "isDefault": false,
+      "name": "ReactFCProps",
+    },
+  ],
+  "imports": Array [
+    Object {
+      "imports": Array [
+        Object {
+          "isDefault": false,
+          "name": "FC",
+        },
+        Object {
+          "isDefault": false,
+          "name": "useState",
+        },
+      ],
+      "isInternal": false,
+      "sourceFile": "react",
+    },
+    Object {
+      "imports": Array [
+        Object {
+          "element": Object {
+            "parameters": Array [
+              Object {
+                "name": "props",
+                "type": "React.PropsWithChildren<ReactFCDependencyProps>",
+              },
+            ],
+            "returnType": "JSX.Element",
+            "returnsJSX": true,
+            "type": 1,
+          },
+          "isDefault": true,
+          "name": "ReactFCDependency",
+        },
+      ],
+      "isInternal": true,
+      "sourceFile": "./ReactFCDependency",
+    },
+    Object {
+      "imports": Array [
+        Object {
+          "element": Object {
+            "parameters": Array [
+              Object {
+                "name": "value",
+                "type": "number",
+              },
+            ],
+            "returnType": "number",
+            "returnsJSX": false,
+            "type": 1,
+          },
+          "isDefault": false,
+          "name": "utilitySquareFunction",
+        },
+      ],
+      "isInternal": true,
+      "sourceFile": "./utilityFunctions",
+    },
+  ],
+}
+`;
+
+exports[`Parser Tests ReactFCDependency matches snapshot 1`] = `
+Object {
+  "exports": Array [
+    Object {
+      "element": Object {
+        "parameters": Array [
+          Object {
+            "name": "props",
+            "type": "React.PropsWithChildren<ReactFCDependencyProps>",
+          },
+        ],
+        "returnType": "JSX.Element",
+        "returnsJSX": true,
+        "type": 1,
+      },
+      "isDefault": true,
+      "name": "ReactFCDependency",
+    },
+  ],
+  "imports": Array [
+    Object {
+      "imports": Array [
+        Object {
+          "isDefault": false,
+          "name": "FC",
+        },
+      ],
+      "isInternal": false,
+      "sourceFile": "react",
+    },
+  ],
+}
+`;
+
+exports[`Parser Tests ReactFunction matches snapshot 1`] = `
+Object {
+  "exports": Array [
+    Object {
+      "element": Object {
+        "parameters": Array [
+          Object {
+            "name": "props",
+            "type": "import(\\"/media/dustin/Data/Code/react-testgen/__test_resources__/ReactFunction\\").ReactFunctionProps",
+          },
+        ],
+        "returnType": "JSX.Element",
+        "returnsJSX": true,
+        "type": 1,
+      },
+      "isDefault": true,
+      "name": "ReactFunction",
+    },
+    Object {
+      "element": Object {
+        "returnsJSX": false,
+        "type": 3,
+        "varType": "number",
+        "varValue": "2",
+      },
+      "isDefault": false,
+      "name": "initialStateCount",
+    },
+    Object {
+      "element": Object {
+        "attributes": Array [
+          Object {
+            "name": "content",
+            "type": "string",
+          },
+        ],
+        "returnsJSX": false,
+        "type": 2,
+      },
+      "isDefault": false,
+      "name": "ReactFunctionProps",
+    },
+  ],
+  "imports": Array [
+    Object {
+      "imports": Array [
+        Object {
+          "isDefault": false,
+          "name": "useState",
+        },
+      ],
+      "isInternal": false,
+      "sourceFile": "react",
+    },
+    Object {
+      "imports": Array [
+        Object {
+          "element": Object {
+            "parameters": Array [
+              Object {
+                "name": "props",
+                "type": "React.PropsWithChildren<ReactFCDependencyProps>",
+              },
+            ],
+            "returnType": "JSX.Element",
+            "returnsJSX": true,
+            "type": 1,
+          },
+          "isDefault": true,
+          "name": "ReactFCDependency",
+        },
+      ],
+      "isInternal": true,
+      "sourceFile": "./ReactFCDependency",
+    },
+    Object {
+      "imports": Array [
+        Object {
+          "element": Object {
+            "parameters": Array [
+              Object {
+                "name": "value",
+                "type": "number",
+              },
+            ],
+            "returnType": "number",
+            "returnsJSX": false,
+            "type": 1,
+          },
+          "isDefault": false,
+          "name": "utilitySquareFunction",
+        },
+      ],
+      "isInternal": true,
+      "sourceFile": "./utilityFunctions",
+    },
+  ],
+}
+`;

@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`importTemplate Tests Given correct ImportBlock With mixed imports 1`] = `"import MockDefault, { MockNamed_1, MockNamed_2 } from \\"./test\\""`;
+exports[`importTemplate Tests With mixed imports 1`] = `"import TestDefault, { TestNamed_1, TestNamed_2 } from \\"./test\\""`;
 
-exports[`importTemplate Tests Given correct ImportBlock With only default import 1`] = `"import MockDefault from \\"./test\\""`;
+exports[`importTemplate Tests With only default import 1`] = `"import TestDefault from \\"./test\\""`;
 
-exports[`importTemplate Tests Given correct ImportBlock With only multiple named imports 1`] = `"import { MockNamed_1, MockNamed_2 } from \\"./test\\""`;
+exports[`importTemplate Tests With only multiple named imports 1`] = `"import { TestNamed_1, TestNamed_2 } from \\"./test\\""`;
 
-exports[`importTemplate Tests Given correct ImportBlock With only multiple unsorted named imports 1`] = `"import { MockNamed_1, MockNamed_2 } from \\"./test\\""`;
+exports[`importTemplate Tests With only multiple unsorted named imports 1`] = `"import { TestNamed_1, TestNamed_2 } from \\"./test\\""`;
 
-exports[`importTemplate Tests Given correct ImportBlock With only one named import 1`] = `"import { MockNamed } from \\"./test\\""`;
+exports[`importTemplate Tests With only one named import 1`] = `"import { TestNamed } from \\"./test\\""`;

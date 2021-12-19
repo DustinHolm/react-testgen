@@ -53,3 +53,8 @@ export interface Attribute {
 export interface Constructor {
     parameters: Attribute[]
 }
+
+export interface ParserResult {
+    imports: ImportBlock[],
+    exports: Export[]
+}

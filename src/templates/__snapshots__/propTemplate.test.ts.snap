@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`propTemplate Tests With attribute 1`] = `
+"let mockPropTestName: testType
+function resetMockPropTestName() {
+    mockPropTestName = mockedReturn
+}
+function givenMockPropTestName(given: testType) {
+    mockPropTestName = given
+}
+"
+`;

@@ -3,12 +3,14 @@ import ReactFCDependency from "./ReactFCDependency"
 import { utilitySquareFunction } from "./utilityFunctions"
 
 
-interface ReactFunctionProps {
+export const initialStateCount: number = 2
+
+export interface ReactFunctionProps {
     content: string
 }
 
 function ReactFunction(props: ReactFunctionProps) {
-    const [count, setCount] = useState(2)
+    const [count, setCount] = useState(initialStateCount)
 
     const increase = () => {
         setCount(utilitySquareFunction(count))

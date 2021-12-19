@@ -1,10 +1,11 @@
-import { Attribute, Export, ExportType, FunctionElement, ImportBlock } from "../types"
+import { Attribute, ExportType, FunctionElement, ImportBlock } from "../types"
 import {createMock} from "./mockTemplate"
 
 describe("mockTemplate Tests", () => {
     let importBlock: ImportBlock
 
     beforeEach(() => {
+        resetMocks()
         importBlock = {
             sourceFile: "./mock",
             isInternal: true,
@@ -69,6 +70,19 @@ describe("mockTemplate Tests", () => {
 
         expect(returnedString).toMatchSnapshot()
     })
+
+    test("Calls createMockDefaults", () => {
+        const exportElement = {
+            name: "defaultTest",
+            isDefault: true,
+            element: getFunctionElement(false, 1)
+        }
+        importBlock.imports.push(exportElement)
+
+        createMock(importBlock)
+
+        expect(mockCreateFunctionDefaults).toHaveBeenCalledWith(["mockDefaultTest", exportElement.element])
+    })
 })
 
 function getFunctionElement(returnsJSX: boolean, numberOfParameters: number): FunctionElement {
@@ -87,4 +101,23 @@ function getFunctionElement(returnsJSX: boolean, numberOfParameters: number): Fu
 
 function getAttribute(): Attribute {
     return {type: "mockType", name: "mockName"}
+}
+
+let mockCreateJSXDefaults: jest.Mock
+function resetMockCreateJSXDefaults() {
+    mockCreateJSXDefaults = jest.fn(() => "    mockedReset")
+}
+
+let mockCreateFunctionDefaults: jest.Mock
+function resetMockCreateFunctionDefaults() {
+    mockCreateFunctionDefaults = jest.fn(() => "    mockedReset")
+}
+jest.mock("./defaultValuesTemplate", () => ({
+    createJSXDefaults: (...args: any[]) => mockCreateJSXDefaults(args),
+    createFunctionDefaults: (...args: any[]) => mockCreateFunctionDefaults(args)
+}))
+
+function resetMocks() {
+    resetMockCreateJSXDefaults()
+    resetMockCreateFunctionDefaults()
 }

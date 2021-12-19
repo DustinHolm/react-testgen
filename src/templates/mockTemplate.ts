@@ -1,24 +1,22 @@
 import { Export, ExportType, FunctionElement, ImportBlock } from "../types"
-import { toPascalCase } from "../util/namingUtils"
+import { createFunctionDefaults, createJSXDefaults } from "./defaultValuesTemplate"
+import { supportedTypes, toPascalCase } from "./common"
 
-const supportedTypes = [ExportType.Function]
-
-export const createMock = (block: ImportBlock): string | undefined => {
-    const imports = block.imports
-
-    if (imports.length === 0) {
-        return undefined
-    }
-
-    const jestActual = imports.find(i => i.element === undefined
+export const createMock = (block: ImportBlock): string => {
+    const jestActual = block.imports.find(i => 
+        i.element === undefined
         || !supportedTypes.includes(i.element.type))
-        ? `    ...jest.requireActual("${block.sourceFile}"),\n`
+        ? `\
+    ...jest.requireActual("${block.sourceFile}"),
+`
         : ""
 
-    const jestMocks = imports.map(i => createJestObject(i)).join("")
+    const jestMocks = block.imports.map(i => createJestObject(i)).join("")
 
-    const jestMockCall = `jest.mock("${block.sourceFile}", () => ({
-${jestActual}${jestMocks}})\n`
+    const jestMockCall = `\
+jest.mock("${block.sourceFile}", () => ({
+${jestActual}${jestMocks}})
+`
 
     const mocks = block.imports.map(i => createExportMock(i))
 
@@ -27,32 +25,38 @@ ${jestActual}${jestMocks}})\n`
 
 const createJestObject = (importElement: Export): string => {
     if (importElement.isDefault) {
-        return `    __esmodule: true,
-    ${importElement.name}: (_val: any) => mock${toPascalCase(importElement.name)}(_val),\n`
+        return `\
+    __esmodule: true,
+    default: (...args: any[]) => mock${toPascalCase(importElement.name)}(args),
+`
     } else {
-        return `    ${importElement.name}: (_val: any) => mock${toPascalCase(importElement.name)}(_val),\n`
+        return `\
+    ${importElement.name}: (...args: any[]) => mock${toPascalCase(importElement.name)}(args),
+`
     }
 }
 
 const createExportMock = (exportElement: Export): string => {
-    switch (exportElement.element?.type) {
-        case ExportType.Function: return createFunctionMock(exportElement)
+    const mockName = "mock" + toPascalCase(exportElement.name)
+    const element = exportElement.element
+
+    switch (element?.type) {
+        case ExportType.Function: return createFunctionMock(mockName, element as FunctionElement)
         // Other cases not yet implemented
         default: return ""
     }
 }
 
-const createFunctionMock = (exportElement: Export): string => {
-    const functionElement = exportElement.element as FunctionElement
-    const mockName = "mock" + toPascalCase(exportElement.name)
-    const returnName = mockName + "Return"
-    const resetFunctionName = "reset" + toPascalCase(mockName)
+const createFunctionMock = (name: string, functionElement: FunctionElement): string => {
+    const defaults = functionElement.returnsJSX
+        ? createJSXDefaults(name)
+        : createFunctionDefaults(name, functionElement)
 
-    const mockDeclaration = `let ${mockName}: jest.Mock\n`
-    const mockReturn = `let ${returnName}: ${functionElement.returnType}\n`
-    const mockReset = `function ${resetFunctionName}() {
-
-}\n`
-
-    return mockDeclaration + mockReturn + mockReset
+    return `\
+let ${name}: jest.Mock
+let ${name}Return: ${functionElement.returnType}
+function reset${toPascalCase(name)}() {
+${defaults}
+}
+`
 }

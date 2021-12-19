@@ -4,11 +4,11 @@ exports[`mockTemplate Tests With default function 1`] = `
 "let mockDefaultTest: jest.Mock
 let mockDefaultTestReturn: mockReturn
 function resetMockDefaultTest() {
-
+    mockedReset
 }
 jest.mock(\\"./mock\\", () => ({
     __esmodule: true,
-    defaultTest: (_val: any) => mockDefaultTest(_val),
+    default: (...args: any[]) => mockDefaultTest(args),
 })
 "
 `;
@@ -17,17 +17,17 @@ exports[`mockTemplate Tests With mixed functions 1`] = `
 "let mockNamedTest: jest.Mock
 let mockNamedTestReturn: mockReturn
 function resetMockNamedTest() {
-
+    mockedReset
 }
 let mockDefaultTest: jest.Mock
 let mockDefaultTestReturn: mockReturn
 function resetMockDefaultTest() {
-
+    mockedReset
 }
 jest.mock(\\"./mock\\", () => ({
-    namedTest: (_val: any) => mockNamedTest(_val),
+    namedTest: (...args: any[]) => mockNamedTest(args),
     __esmodule: true,
-    defaultTest: (_val: any) => mockDefaultTest(_val),
+    default: (...args: any[]) => mockDefaultTest(args),
 })
 "
 `;
@@ -36,16 +36,16 @@ exports[`mockTemplate Tests With multiple named functions 1`] = `
 "let mockNamedTest_1: jest.Mock
 let mockNamedTest_1Return: mockReturn
 function resetMockNamedTest_1() {
-
+    mockedReset
 }
 let mockNamedTest_2: jest.Mock
 let mockNamedTest_2Return: mockReturn
 function resetMockNamedTest_2() {
-
+    mockedReset
 }
 jest.mock(\\"./mock\\", () => ({
-    namedTest_1: (_val: any) => mockNamedTest_1(_val),
-    namedTest_2: (_val: any) => mockNamedTest_2(_val),
+    namedTest_1: (...args: any[]) => mockNamedTest_1(args),
+    namedTest_2: (...args: any[]) => mockNamedTest_2(args),
 })
 "
 `;
@@ -54,10 +54,10 @@ exports[`mockTemplate Tests With named function 1`] = `
 "let mockNamedTest: jest.Mock
 let mockNamedTestReturn: mockReturn
 function resetMockNamedTest() {
-
+    mockedReset
 }
 jest.mock(\\"./mock\\", () => ({
-    namedTest: (_val: any) => mockNamedTest(_val),
+    namedTest: (...args: any[]) => mockNamedTest(args),
 })
 "
 `;

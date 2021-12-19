@@ -1,12 +1,15 @@
 import { existsSync } from "fs"
 import { Project, PropertySignature, SourceFile, SyntaxKind } from "ts-morph"
-import { Attribute, ClassElement, Constructor, Export, ExportType, FunctionElement, ImportBlock, InterfaceElement, MethodElement, VariableElement } from "./types"
+import { Attribute, ClassElement, Constructor, Export, ExportType, FunctionElement, ImportBlock, InterfaceElement, MethodElement, ParserResult, VariableElement } from "./types"
+import { createModulePath } from "./utils"
 
 
 class Parser {
-    source: SourceFile
-    exports: Export[]
-    isExportsParsed: boolean
+    private source: SourceFile
+    private imports: ImportBlock[]
+    private isImportsParsed: boolean
+    private exports: Export[]
+    private isExportsParsed: boolean
 
     constructor(path: string) {
         const project = new Project()
@@ -17,12 +20,43 @@ class Parser {
         }
 
         this.source = source
-        this.exports = this.parseExportNames()
+        this.imports = []
+        this.isImportsParsed = false
+        this.exports = this.getExportNames()
         this.isExportsParsed = false
     }
 
-    parseImports(): ImportBlock[] {
-        return this.source.getImportDeclarations().map(imDe => {
+    parse(): ParserResult {
+        if (!this.isImportsParsed) {
+            this.parseImports()
+            this.isImportsParsed = true
+        }
+
+        if (!this.isExportsParsed) {
+            this.parseExports()
+            this.isExportsParsed = true
+        }
+
+        return {
+            imports: this.imports,
+            exports: this.exports
+        }
+    }
+
+    parseExportsOnly(): ParserResult {
+        if (!this.isExportsParsed) {
+            this.parseExports()
+            this.isExportsParsed = true
+        }
+
+        return {
+            imports: [],
+            exports: this.exports
+        }
+    }
+
+    private parseImports(): void {
+        this.imports = this.source.getImportDeclarations().map(imDe => {
             let importModule = imDe.getModuleSpecifier().getText()
             if (importModule.startsWith("\"") && importModule.endsWith("\"")
                 || importModule.startsWith("\'") && importModule.endsWith("\'")) {
@@ -51,13 +85,13 @@ class Parser {
             }
 
             if (importModuleIsInternal) {
-                const path = this.source.getDirectoryPath() + importModule.slice(1)
+                const path = createModulePath(this.source.getDirectoryPath(), importModule)
                 const fileExtension = existsSync(path + ".tsx") ? ".tsx" : ".ts"
                 if (fileExtension === ".ts" && !existsSync(path + fileExtension)) {
                     throw Error(`This import was not found: ${path + fileExtension}`)
                 }
                 const importParser = new Parser(path + fileExtension)
-                const importExports = importParser.parseExports()
+                const importExports = importParser.parseExportsOnly().exports
 
                 imports.forEach(i => {
                     i.element = importExports.find(e => e.name === i.name)?.element
@@ -72,19 +106,14 @@ class Parser {
         })
     }
 
-    parseExports(): Export[] {
-        if (!this.isExportsParsed) {
-            this.parseInterfaces()
-            this.parseClasses()
-            this.parseFunctions()
-            this.parseVariables()
-            this.isExportsParsed = true
-        }
-
-        return this.exports
+    private parseExports(): void {
+        this.parseInterfaces()
+        this.parseClasses()
+        this.parseFunctions()
+        this.parseVariables()
     }
 
-    private parseInterfaces() {
+    private parseInterfaces(): void {
         this.source.getInterfaces().forEach(inDe => {
             const existingExport = this.exports.find(e => e.name === inDe.getName())
 
@@ -103,7 +132,7 @@ class Parser {
         })
     }
 
-    private parseClasses() {
+    private parseClasses(): void {
         this.source.getClasses().forEach(clDe => {
             const existingExport = this.exports.find(e => e.name === clDe.getName())
 
@@ -148,7 +177,7 @@ class Parser {
         })
     }
 
-    private parseFunctions() {
+    private parseFunctions(): void {
         this.source.getFunctions().forEach(fuDe => {
             const existingExport = this.exports.find(e => e.name === fuDe.getName())
 
@@ -170,7 +199,7 @@ class Parser {
         })
     }
 
-    private parseVariables() {
+    private parseVariables(): void {
         this.source.getVariableDeclarations().forEach(vaDe => {
             const existingExport = this.exports.find(e => e.name === vaDe.getName())
 
@@ -224,7 +253,7 @@ class Parser {
         })
     }
 
-    private parseExportNames(): Export[] {
+    private getExportNames(): Export[] {
         const defaultExports = this.source.getExportAssignments()
         const exportSymbols = this.source.getExportSymbols()
         const exportNames: Export[] = []

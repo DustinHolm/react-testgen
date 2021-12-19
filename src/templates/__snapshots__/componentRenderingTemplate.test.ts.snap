@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createComponentRenderFunction Tests With multiple props 1`] = `
+"function whenComponentIsRendered() {
+    return render(
+        <test
+            att_1={mockAtt_1}
+            att_2={mockAtt_2}
+        />
+    )
+}
+"
+`;
+
+exports[`createComponentRenderFunction Tests With one prop 1`] = `
+"function whenComponentIsRendered() {
+    return render(
+        <test
+            att_1={mockAtt_1}
+        />
+    )
+}
+"
+`;
+
+exports[`createComponentRenderFunction Tests Without props 1`] = `
+"function whenComponentIsRendered() {
+    return render(
+        <test />
+    )
+}
+"
+`;
