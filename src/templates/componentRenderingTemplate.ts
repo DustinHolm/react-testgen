@@ -23,6 +23,6 @@ ${renderCall}
 
 const createPropCall = (prop: Attribute): string => {
     return `\
-            ${prop.name}={mock${toPascalCase(prop.name)}}\
+            ${prop.name}={mockProp${toPascalCase(prop.name)}}\
 `
 }

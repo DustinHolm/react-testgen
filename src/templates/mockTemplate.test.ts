@@ -1,4 +1,4 @@
-import { Attribute, ExportType, FunctionElement, ImportBlock } from "../types"
+import { Attribute, ClassElement, ExportType, FunctionElement, ImportBlock } from "../types"
 import {createMock} from "./mockTemplate"
 
 describe("mockTemplate Tests", () => {
@@ -11,6 +11,30 @@ describe("mockTemplate Tests", () => {
             isInternal: true,
             imports: []
         }
+    })
+
+    test("With function based React Component", () => {
+        importBlock.imports.push({
+            name: "defaultTest",
+            isDefault: true,
+            element: getFunctionElement(true, 2)
+        })
+
+        const returnedString = createMock(importBlock)
+
+        expect(returnedString).toMatchSnapshot()
+    })
+
+    test("With class based React Component", () => {
+        importBlock.imports.push({
+            name: "defaultTest",
+            isDefault: true,
+            element: getClassElement(true, 2)
+        })
+
+        const returnedString = createMock(importBlock)
+
+        expect(returnedString).toMatchSnapshot()
     })
 
     test("With default function", () => {
@@ -84,6 +108,20 @@ describe("mockTemplate Tests", () => {
         expect(mockCreateFunctionDefaults).toHaveBeenCalledWith(["mockDefaultTest", exportElement.element])
     })
 })
+
+function getClassElement(returnsJSX: boolean, numberOfParameters: number): ClassElement {
+    const parameters = []
+    for (let i = 0; i < numberOfParameters; i++) {
+        parameters.push(getAttribute())
+    }
+    
+    return {
+        type: ExportType.Class,
+        returnsJSX: returnsJSX,
+        methods: [{name: "testMethod", ...getFunctionElement(returnsJSX, 0)}],
+        constructors: [{parameters: parameters}]
+    }
+}
 
 function getFunctionElement(returnsJSX: boolean, numberOfParameters: number): FunctionElement {
     const parameters = []

@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ScaffoldBuilder Tests Matches snapshot 1`] = `
+"import { render, screen } from \\"@testing-library/react\\"
+
+
+describe(\\"Test Tests\\", () => {
+    beforeEach(() => {
+        resetMocks()
+    })
+
+    test(\\"Component renders\\", () => {
+        whenComponentIsRendered()
+        screen.debug()
+    })
+})
+
+function resetMocks() {
+
+}
+
+
+
+
+"
+`;

@@ -1,8 +1,34 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`mockTemplate Tests With class based React Component 1`] = `
+"let mockDefaultTest: jest.Mock
+let mockDefaultTestReturn: JSX.Element
+function resetMockDefaultTest() {
+    mockedReset
+}
+jest.mock(\\"./mock\\", () => ({
+    __esmodule: true,
+    default: (...args: any[]) => mockDefaultTest(args),
+})
+"
+`;
+
 exports[`mockTemplate Tests With default function 1`] = `
 "let mockDefaultTest: jest.Mock
 let mockDefaultTestReturn: mockReturn
+function resetMockDefaultTest() {
+    mockedReset
+}
+jest.mock(\\"./mock\\", () => ({
+    __esmodule: true,
+    default: (...args: any[]) => mockDefaultTest(args),
+})
+"
+`;
+
+exports[`mockTemplate Tests With function based React Component 1`] = `
+"let mockDefaultTest: jest.Mock
+let mockDefaultTestReturn: JSX.Element
 function resetMockDefaultTest() {
     mockedReset
 }

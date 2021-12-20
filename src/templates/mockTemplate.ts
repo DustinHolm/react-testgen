@@ -1,11 +1,12 @@
-import { Export, ExportType, FunctionElement, ImportBlock } from "../types"
+import { Attribute, ClassElement, Export, ExportType, FunctionElement, ImportBlock } from "../types"
 import { createFunctionDefaults, createJSXDefaults } from "./defaultValuesTemplate"
 import { supportedTypes, toPascalCase } from "./common"
 
 export const createMock = (block: ImportBlock): string => {
-    const jestActual = block.imports.find(i => 
+    const jestActual = block.imports.find(i =>
         i.element === undefined
-        || !supportedTypes.includes(i.element.type))
+        || (!supportedTypes.includes(i.element.type)
+            && !i.element.returnsJSX))
         ? `\
     ...jest.requireActual("${block.sourceFile}"),
 `
@@ -40,6 +41,26 @@ const createExportMock = (exportElement: Export): string => {
     const mockName = "mock" + toPascalCase(exportElement.name)
     const element = exportElement.element
 
+    if (element?.returnsJSX === true) {
+        const parameters: Attribute[] = []
+        switch (element?.type) {
+            case ExportType.Function: {
+                return createJSXMock(
+                    mockName,
+                    (element as FunctionElement).parameters
+                )
+            }
+            case ExportType.Class: {
+                return createJSXMock(
+                    mockName,
+                    (element as ClassElement).constructors.flatMap(c => c.parameters)
+                )
+            }
+            // Other cases not yet implemented
+            default: return ""
+        }
+    }
+
     switch (element?.type) {
         case ExportType.Function: return createFunctionMock(mockName, element as FunctionElement)
         // Other cases not yet implemented
@@ -55,6 +76,18 @@ const createFunctionMock = (name: string, functionElement: FunctionElement): str
     return `\
 let ${name}: jest.Mock
 let ${name}Return: ${functionElement.returnType}
+function reset${toPascalCase(name)}() {
+${defaults}
+}
+`
+}
+
+const createJSXMock = (name: string, props: Attribute[]): string => {
+    const defaults = createJSXDefaults(name)
+
+    return `\
+let ${name}: jest.Mock
+let ${name}Return: JSX.Element
 function reset${toPascalCase(name)}() {
 ${defaults}
 }

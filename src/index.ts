@@ -15,11 +15,11 @@ function parseFiles(err: NodeJS.ErrnoException | null, files: string[]) {
         console.log("FILE", file)
         if (!file.endsWith(".tsx") || file.endsWith(".test.tsx")) continue
         try {
-            const scaffold = new ScaffoldBuilder()
+            const scaffold = new ScaffoldBuilder(file)
             const parser = new Parser(`${directory}/${file}`)
-            parser.parseImports().forEach(i => scaffold.addImport(i))
-            parser.parseExports().forEach(e => scaffold.addExport(e))
-
+            parser.parse().imports.forEach(i => scaffold.addImport(i))
+            parser.parse().exports.forEach(e => scaffold.addExport(e))
+            
             scaffold.build()
         } catch (e) {
             console.error(e)

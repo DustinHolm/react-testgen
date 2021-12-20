@@ -9,8 +9,8 @@ Object {
           Object {
             "parameters": Array [
               Object {
-                "name": "props",
-                "type": "import(\\"/media/dustin/Data/Code/react-testgen/__test_resources__/ReactClass\\").ReactClassProps",
+                "name": "content",
+                "type": "string",
               },
             ],
           },
@@ -55,6 +55,7 @@ Object {
             "type": "string",
           },
         ],
+        "name": "ReactClassProps",
         "returnsJSX": false,
         "type": 2,
       },
@@ -81,8 +82,8 @@ Object {
               Object {
                 "parameters": Array [
                   Object {
-                    "name": "props",
-                    "type": "ReactClassDependencyProps",
+                    "name": "content",
+                    "type": "string",
                   },
                 ],
               },
@@ -140,8 +141,8 @@ Object {
           Object {
             "parameters": Array [
               Object {
-                "name": "props",
-                "type": "ReactClassDependencyProps",
+                "name": "content",
+                "type": "string",
               },
             ],
           },
@@ -184,8 +185,8 @@ Object {
       "element": Object {
         "parameters": Array [
           Object {
-            "name": "props",
-            "type": "React.PropsWithChildren<import(\\"/media/dustin/Data/Code/react-testgen/__test_resources__/ReactFC\\").ReactFCProps>",
+            "name": "content",
+            "type": "string",
           },
         ],
         "returnType": "JSX.Element",
@@ -213,6 +214,7 @@ Object {
             "type": "string",
           },
         ],
+        "name": "ReactFCProps",
         "returnsJSX": false,
         "type": 2,
       },
@@ -322,8 +324,8 @@ Object {
       "element": Object {
         "parameters": Array [
           Object {
-            "name": "props",
-            "type": "import(\\"/media/dustin/Data/Code/react-testgen/__test_resources__/ReactFunction\\").ReactFunctionProps",
+            "name": "content",
+            "type": "string",
           },
         ],
         "returnType": "JSX.Element",
@@ -351,6 +353,7 @@ Object {
             "type": "string",
           },
         ],
+        "name": "ReactFunctionProps",
         "returnsJSX": false,
         "type": 2,
       },

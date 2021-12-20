@@ -1,3 +1,5 @@
+import { ArrowFunction, FunctionDeclaration, FunctionExpression, MethodDeclaration } from "ts-morph";
+
 export interface ImportBlock {
     sourceFile: string,
     isInternal: boolean,
@@ -37,6 +39,7 @@ export interface FunctionElement extends ExportableElement {
 }
 
 export interface InterfaceElement extends ExportableElement {
+    name: string,
     attributes: Attribute[]
 }
 
@@ -58,3 +61,5 @@ export interface ParserResult {
     imports: ImportBlock[],
     exports: Export[]
 }
+
+export type HasReturnAndParameters = FunctionDeclaration | ArrowFunction | FunctionExpression | MethodDeclaration

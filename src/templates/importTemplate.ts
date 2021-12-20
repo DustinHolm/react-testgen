@@ -15,5 +15,5 @@ export const createImport = (importBlock: ImportBlock): string => {
 }
 
 export const createDefaultImports = (): string => {
-    return 'import { render, screen } from "@testing-library/react"\n'
+    return 'import { render, screen } from "@testing-library/react"'
 }

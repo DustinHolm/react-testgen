@@ -1,6 +1,6 @@
 import { existsSync } from "fs"
-import { Project, PropertySignature, SourceFile, SyntaxKind } from "ts-morph"
-import { Attribute, ClassElement, Constructor, Export, ExportType, FunctionElement, ImportBlock, InterfaceElement, MethodElement, ParserResult, VariableElement } from "./types"
+import { ArrowFunction, ConstructorDeclaration, FunctionDeclaration, FunctionExpression, MethodDeclaration, Project, PropertySignature, SourceFile, SyntaxKind } from "ts-morph"
+import { Attribute, ClassElement, Constructor, Export, ExportType, FunctionElement, HasReturnAndParameters, ImportBlock, InterfaceElement, MethodElement, ParserResult, VariableElement } from "./types"
 import { createModulePath } from "./utils"
 
 
@@ -10,13 +10,14 @@ class Parser {
     private isImportsParsed: boolean
     private exports: Export[]
     private isExportsParsed: boolean
+    private interfaces: InterfaceElement[]
 
     constructor(path: string) {
         const project = new Project()
         project.addSourceFileAtPath(path)
         const source = project.getSourceFile(path)
         if (source === undefined) {
-            throw new Error("SourceFile not found!")
+            throw new Error("Sourcefile not found!")
         }
 
         this.source = source
@@ -24,6 +25,7 @@ class Parser {
         this.isImportsParsed = false
         this.exports = this.getExportNames()
         this.isExportsParsed = false
+        this.interfaces = []
     }
 
     parse(): ParserResult {
@@ -68,21 +70,12 @@ class Parser {
                 imSp.getName())
             const defaultImport = imDe.getDefaultImport()?.getText()
 
-            const imports: Export[] = []
-
-            namedImports.forEach(naIm =>
-                imports.push({
-                    name: naIm,
-                    isDefault: false,
-                })
-            )
-
-            if (defaultImport !== undefined) {
-                imports.push({
-                    name: defaultImport,
-                    isDefault: true,
-                })
-            }
+            const imports: Export[] = namedImports
+                .map(i => ({ name: i, isDefault: false }))
+                .concat([defaultImport]
+                    .filter(i => i !== undefined)
+                    .map(i => ({ name: i!, isDefault: true }))
+                )
 
             if (importModuleIsInternal) {
                 const path = createModulePath(this.source.getDirectoryPath(), importModule)
@@ -115,20 +108,25 @@ class Parser {
 
     private parseInterfaces(): void {
         this.source.getInterfaces().forEach(inDe => {
+            const attributes: Attribute[] = inDe.getMembers().map(tyElTy => ({
+                name: (tyElTy as PropertySignature).getName(),
+                type: tyElTy.getType().getText()
+            }))
+
+            const interfaceElement = {
+                returnsJSX: false,
+                type: ExportType.Interface,
+                attributes: attributes,
+                name: inDe.getName()
+            } as InterfaceElement
+
             const existingExport = this.exports.find(e => e.name === inDe.getName())
 
             if (existingExport !== undefined) {
-                const attributes: Attribute[] = inDe.getMembers().map(tyElTy => ({
-                    name: (tyElTy as PropertySignature).getName(),
-                    type: tyElTy.getType().getText()
-                }))
-
-                existingExport.element = {
-                    returnsJSX: false,
-                    type: ExportType.Interface,
-                    attributes: attributes
-                } as InterfaceElement
+                existingExport.element = interfaceElement
             }
+
+            this.interfaces.push(interfaceElement)
         })
     }
 
@@ -137,38 +135,28 @@ class Parser {
             const existingExport = this.exports.find(e => e.name === clDe.getName())
 
             if (existingExport !== undefined) {
+                const methods = clDe.getMethods().map(meDe => {
+                    const name = meDe.getName()
+                    const functionElement = this.getFunctionElement(meDe)
+
+                    return {
+                        ...functionElement,
+                        name: name
+                    } as MethodElement
+                })
+
+                const returnsJSX = methods.some(m => m.returnsJSX)
+
                 const constructors: Constructor[] = clDe.getConstructors().map(coDe => {
-                    const attributes: Attribute[] = coDe.getParameters().map(p => ({
-                        name: p.getName(),
-                        type: p.getType().getText()
-                    }))
+                    const attributes: Attribute[] = this.getAttributes(coDe)
 
                     return {
                         parameters: attributes
                     }
                 })
 
-
-                const methods = clDe.getMethods().map(meDe => {
-                    const name = meDe.getName()
-                    const returnType = meDe.getReturnType().getText()
-
-                    const parameters: Attribute[] = meDe.getParameters().map(paDe => ({
-                        name: paDe.getName(),
-                        type: paDe.getType().getText()
-                    }))
-
-                    return {
-                        returnsJSX: returnType.includes("JSX"),
-                        type: ExportType.Function,
-                        returnType: returnType,
-                        parameters: parameters,
-                        name: name
-                    } as MethodElement
-                })
-
                 existingExport.element = {
-                    returnsJSX: methods.some(m => m.returnsJSX),
+                    returnsJSX: returnsJSX,
                     type: ExportType.Class,
                     methods: methods,
                     constructors: constructors
@@ -182,19 +170,7 @@ class Parser {
             const existingExport = this.exports.find(e => e.name === fuDe.getName())
 
             if (existingExport !== undefined) {
-                const returnType = fuDe.getReturnType().getText()
-
-                const parameters: Attribute[] = fuDe.getParameters().map(paDe => ({
-                    name: paDe.getName(),
-                    type: paDe.getType().getText()
-                }))
-
-                existingExport.element = {
-                    returnsJSX: returnType.includes("JSX"),
-                    type: ExportType.Function,
-                    returnType: returnType,
-                    parameters: parameters
-                } as FunctionElement
+                existingExport.element = this.getFunctionElement(fuDe)
             }
         })
     }
@@ -204,49 +180,24 @@ class Parser {
             const existingExport = this.exports.find(e => e.name === vaDe.getName())
 
             if (existingExport !== undefined) {
-                const aliasType = vaDe.getChildrenOfKind(SyntaxKind.TypeReference)
-                    .map(typeRef => typeRef.getText())
-                    .shift()
-
-
-                const variableType = aliasType ?? vaDe.getType().getText()
-                let variableValue = undefined
-                let parameters: Attribute[] | undefined = undefined
-                let returnType: string | undefined = undefined
                 const arrowFunction = vaDe.getInitializerIfKind(SyntaxKind.ArrowFunction)
                 const otherFunction = vaDe.getInitializerIfKind(SyntaxKind.FunctionExpression)
 
                 if (arrowFunction) {
-                    returnType = arrowFunction.getReturnType().getText()
-
-                    parameters = arrowFunction.getParameters().map(p => ({
-                        name: p.getName(),
-                        type: p.getType().getText()
-                    }))
+                    existingExport.element = this.getFunctionElement(arrowFunction)
                 } else if (otherFunction) {
-                    returnType = otherFunction.getReturnType().getText()
-
-                    parameters = otherFunction.getParameters().map(p => ({
-                        name: p.getName(),
-                        type: p.getType().getText()
-                    }))
+                    existingExport.element = this.getFunctionElement(otherFunction)
                 } else {
-                    variableValue = vaDe.getInitializer()?.getText()
-                }
+                    const aliasType = vaDe.getChildrenOfKind(SyntaxKind.TypeReference)
+                        .map(typeRef => typeRef.getText())
+                        .shift()
+                    const variableType = aliasType ?? vaDe.getType().getText()
 
-                if (parameters !== undefined && returnType !== undefined) {
                     existingExport.element = {
-                        returnsJSX: returnType.includes("JSX"),
-                        type: ExportType.Function,
-                        returnType: returnType,
-                        parameters: parameters
-                    } as FunctionElement
-                } else {
-                    existingExport.element = {
-                        returnsJSX: variableType.includes("JSX"),
+                        returnsJSX: variableType.startsWith("JSX"),
                         type: ExportType.Variable,
                         varType: variableType,
-                        varValue: variableValue ?? "undefined"
+                        varValue: vaDe.getInitializer()?.getText() ?? "undefined"
                     } as VariableElement
                 }
             }
@@ -275,6 +226,37 @@ class Parser {
         })
 
         return exportNames
+    }
+
+    
+    private getFunctionElement(declaration: HasReturnAndParameters): FunctionElement {
+        const returnType = declaration.getReturnType().getText()
+        const attributes: Attribute[] = this.getAttributes(declaration)
+
+        return {
+            returnsJSX: returnType.startsWith("JSX"),
+            type: ExportType.Function,
+            returnType: returnType,
+            parameters: attributes
+        }
+    }
+
+    private getAttributes(declaration: HasReturnAndParameters | ConstructorDeclaration): Attribute[] {
+        return declaration.getParameters().flatMap(p => {
+            const typeName = p.getType().getText()
+            const correspondingInterface = this.interfaces.find(i =>
+                i.name === typeName
+                || (typeName.includes("import(")
+                    && typeName.includes(i.name)))
+            if (correspondingInterface !== undefined) {
+                return correspondingInterface.attributes
+            } else {
+                return {
+                    name: p.getName(),
+                    type: p.getType().getText()
+                }
+            }
+        })
     }
 }
 

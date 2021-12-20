@@ -4,8 +4,8 @@ exports[`createComponentRenderFunction Tests With multiple props 1`] = `
 "function whenComponentIsRendered() {
     return render(
         <test
-            att_1={mockAtt_1}
-            att_2={mockAtt_2}
+            att_1={mockPropAtt_1}
+            att_2={mockPropAtt_2}
         />
     )
 }
@@ -16,7 +16,7 @@ exports[`createComponentRenderFunction Tests With one prop 1`] = `
 "function whenComponentIsRendered() {
     return render(
         <test
-            att_1={mockAtt_1}
+            att_1={mockPropAtt_1}
         />
     )
 }
