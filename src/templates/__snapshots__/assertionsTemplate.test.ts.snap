@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`assertionsTemplate Tests For React component 1`] = `
+"function thenMockComponentIsRendered(expected: boolean) {
+    if (expected) {
+        expect(screen.getByTestId(\\"mockMockComponent\\")).toBeInTheDocument()
+    } else {
+        expect(screen.queryByTestId(\\"mockMockComponent\\")).toBeNull()
+    }
+}
+
+function thenMockComponentWasCalledWith(props: any) {
+    expect(mockMockComponent).toHaveBeenCalledWith(props)
+}
+"
+`;
+
+exports[`assertionsTemplate Tests For function with parameters 1`] = `
+"function thenMockComponentWasCalledWith(num: number, str: string) {
+    expect(mockMockComponent).toHaveBeenCalledWith(num, str)
+}
+"
+`;
+
+exports[`assertionsTemplate Tests For function without parameters 1`] = `
+"
+function thenMockComponentWasCalled(expected: boolean) {
+    if (expected) {
+        expect(mockMockComponent).toHaveBeenCalled()
+    } else {
+        expect(mockMockComponent).not.toHaveBeenCalled()
+    }
+}
+"
+`;

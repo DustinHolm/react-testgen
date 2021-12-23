@@ -62,6 +62,22 @@ function whenComponentIsRendered() {
     )
 }
 
+function thenReactClassDependencyIsRendered(expected: boolean) {
+    if (expected) {
+        expect(screen.getByTestId(\\"mockReactClassDependency\\")).toBeInTheDocument()
+    } else {
+        expect(screen.queryByTestId(\\"mockReactClassDependency\\")).toBeNull()
+    }
+}
+
+function thenReactClassDependencyWasCalledWith(props: any) {
+    expect(mockReactClassDependency).toHaveBeenCalledWith(props)
+}
+
+function thenUtilitySquareFunctionWasCalledWith(value: number) {
+    expect(mockUtilitySquareFunction).toHaveBeenCalledWith(value)
+}
+
 "
 `;
 
@@ -127,6 +143,22 @@ function whenComponentIsRendered() {
     )
 }
 
+function thenReactFCDependencyIsRendered(expected: boolean) {
+    if (expected) {
+        expect(screen.getByTestId(\\"mockReactFCDependency\\")).toBeInTheDocument()
+    } else {
+        expect(screen.queryByTestId(\\"mockReactFCDependency\\")).toBeNull()
+    }
+}
+
+function thenReactFCDependencyWasCalledWith(props: any) {
+    expect(mockReactFCDependency).toHaveBeenCalledWith(props)
+}
+
+function thenUtilitySquareFunctionWasCalledWith(value: number) {
+    expect(mockUtilitySquareFunction).toHaveBeenCalledWith(value)
+}
+
 "
 `;
 
@@ -190,6 +222,22 @@ function whenComponentIsRendered() {
             content={mockPropContent}
         />
     )
+}
+
+function thenReactFCDependencyIsRendered(expected: boolean) {
+    if (expected) {
+        expect(screen.getByTestId(\\"mockReactFCDependency\\")).toBeInTheDocument()
+    } else {
+        expect(screen.queryByTestId(\\"mockReactFCDependency\\")).toBeNull()
+    }
+}
+
+function thenReactFCDependencyWasCalledWith(props: any) {
+    expect(mockReactFCDependency).toHaveBeenCalledWith(props)
+}
+
+function thenUtilitySquareFunctionWasCalledWith(value: number) {
+    expect(mockUtilitySquareFunction).toHaveBeenCalledWith(value)
 }
 
 "
