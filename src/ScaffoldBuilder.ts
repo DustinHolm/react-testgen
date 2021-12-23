@@ -1,6 +1,6 @@
 import { createComponentRenderFunction } from "./templates/componentRenderingTemplate"
 import { createDescribeBlock } from "./templates/describeBlockTemplate"
-import { createDefaultImports, createImport } from "./templates/importTemplate"
+import { createComponentImport, createDefaultImports, createImport } from "./templates/importTemplate"
 import { createMock } from "./templates/mockTemplate"
 import { createProp } from "./templates/propTemplate"
 import { createResetMocksFunction } from "./templates/resetMocksTemplate"
@@ -35,10 +35,11 @@ class ScaffoldBuilder {
 
         const mocks = this.imports.filter(i => i.isInternal)
 
-        const importsString = [
-            createDefaultImports(),
-            ...this.imports.map(i => createImport(i))
-        ].join("\n")
+        const importsAsStrings: string[] = []
+        importsAsStrings.push(createDefaultImports())
+        if (mainExport !== undefined) importsAsStrings.push(createComponentImport(mainExport, this.name))
+        importsAsStrings.push(...this.imports.map(i => createImport(i)))
+        const importsString = importsAsStrings.join("\n")
 
         const describeString = createDescribeBlock(this.name)
 

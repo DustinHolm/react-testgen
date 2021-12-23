@@ -243,8 +243,8 @@ Object {
           "element": Object {
             "parameters": Array [
               Object {
-                "name": "props",
-                "type": "React.PropsWithChildren<ReactFCDependencyProps>",
+                "name": "content",
+                "type": "string",
               },
             ],
             "returnType": "JSX.Element",
@@ -290,8 +290,8 @@ Object {
       "element": Object {
         "parameters": Array [
           Object {
-            "name": "props",
-            "type": "React.PropsWithChildren<ReactFCDependencyProps>",
+            "name": "content",
+            "type": "string",
           },
         ],
         "returnType": "JSX.Element",
@@ -378,8 +378,8 @@ Object {
           "element": Object {
             "parameters": Array [
               Object {
-                "name": "props",
-                "type": "React.PropsWithChildren<ReactFCDependencyProps>",
+                "name": "content",
+                "type": "string",
               },
             ],
             "returnType": "JSX.Element",

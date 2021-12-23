@@ -1,5 +1,5 @@
 import { existsSync } from "fs"
-import { ArrowFunction, ConstructorDeclaration, FunctionDeclaration, FunctionExpression, MethodDeclaration, Project, PropertySignature, SourceFile, SyntaxKind } from "ts-morph"
+import { ConstructorDeclaration, Project, PropertySignature, SourceFile, SyntaxKind } from "ts-morph"
 import { Attribute, ClassElement, Constructor, Export, ExportType, FunctionElement, HasReturnAndParameters, ImportBlock, InterfaceElement, MethodElement, ParserResult, VariableElement } from "./types"
 import { createModulePath } from "./utils"
 
@@ -228,7 +228,7 @@ class Parser {
         return exportNames
     }
 
-    
+
     private getFunctionElement(declaration: HasReturnAndParameters): FunctionElement {
         const returnType = declaration.getReturnType().getText()
         const attributes: Attribute[] = this.getAttributes(declaration)
@@ -246,8 +246,7 @@ class Parser {
             const typeName = p.getType().getText()
             const correspondingInterface = this.interfaces.find(i =>
                 i.name === typeName
-                || (typeName.includes("import(")
-                    && typeName.includes(i.name)))
+                || this.isWrappedInterface(typeName, i.name))
             if (correspondingInterface !== undefined) {
                 return correspondingInterface.attributes
             } else {
@@ -257,6 +256,12 @@ class Parser {
                 }
             }
         })
+    }
+
+    private isWrappedInterface(given: string, expected: string): boolean {
+        return (given.includes("import(")
+            && given.includes(`).${expected}`))
+            || given.endsWith(`<${expected}>`)
     }
 }
 

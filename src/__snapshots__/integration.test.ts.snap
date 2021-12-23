@@ -2,6 +2,7 @@
 
 exports[`Integration Tests ReactClass matches snapshot 1`] = `
 "import { render, screen } from \\"@testing-library/react\\"
+import ReactClass from \\"./ReactClass\\"
 import { Component } from \\"react\\"
 import ReactClassDependency from \\"./ReactClassDependency\\"
 import { utilitySquareFunction } from \\"./utilityFunctions\\"
@@ -33,7 +34,7 @@ function resetMockReactClassDependency() {
 jest.mock(\\"./ReactClassDependency\\", () => ({
     __esmodule: true,
     default: (...args: any[]) => mockReactClassDependency(args),
-})
+}))
 
 let mockUtilitySquareFunction: jest.Mock
 let mockUtilitySquareFunctionReturn: number
@@ -43,7 +44,7 @@ function resetMockUtilitySquareFunction() {
 }
 jest.mock(\\"./utilityFunctions\\", () => ({
     utilitySquareFunction: (...args: any[]) => mockUtilitySquareFunction(args),
-})
+}))
 
 let mockPropContent: string
 function resetMockPropContent() {
@@ -66,6 +67,7 @@ function whenComponentIsRendered() {
 
 exports[`Integration Tests ReactFC matches snapshot 1`] = `
 "import { render, screen } from \\"@testing-library/react\\"
+import ReactFC from \\"./ReactFC\\"
 import { FC, useState } from \\"react\\"
 import ReactFCDependency from \\"./ReactFCDependency\\"
 import { utilitySquareFunction } from \\"./utilityFunctions\\"
@@ -97,7 +99,7 @@ function resetMockReactFCDependency() {
 jest.mock(\\"./ReactFCDependency\\", () => ({
     __esmodule: true,
     default: (...args: any[]) => mockReactFCDependency(args),
-})
+}))
 
 let mockUtilitySquareFunction: jest.Mock
 let mockUtilitySquareFunctionReturn: number
@@ -107,7 +109,7 @@ function resetMockUtilitySquareFunction() {
 }
 jest.mock(\\"./utilityFunctions\\", () => ({
     utilitySquareFunction: (...args: any[]) => mockUtilitySquareFunction(args),
-})
+}))
 
 let mockPropContent: string
 function resetMockPropContent() {
@@ -130,6 +132,7 @@ function whenComponentIsRendered() {
 
 exports[`Integration Tests ReactFunction matches snapshot 1`] = `
 "import { render, screen } from \\"@testing-library/react\\"
+import ReactFunction from \\"./ReactFunction\\"
 import { useState } from \\"react\\"
 import ReactFCDependency from \\"./ReactFCDependency\\"
 import { utilitySquareFunction } from \\"./utilityFunctions\\"
@@ -161,7 +164,7 @@ function resetMockReactFCDependency() {
 jest.mock(\\"./ReactFCDependency\\", () => ({
     __esmodule: true,
     default: (...args: any[]) => mockReactFCDependency(args),
-})
+}))
 
 let mockUtilitySquareFunction: jest.Mock
 let mockUtilitySquareFunctionReturn: number
@@ -171,7 +174,7 @@ function resetMockUtilitySquareFunction() {
 }
 jest.mock(\\"./utilityFunctions\\", () => ({
     utilitySquareFunction: (...args: any[]) => mockUtilitySquareFunction(args),
-})
+}))
 
 let mockPropContent: string
 function resetMockPropContent() {

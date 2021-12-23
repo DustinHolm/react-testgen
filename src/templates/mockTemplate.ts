@@ -16,7 +16,7 @@ export const createMock = (block: ImportBlock): string => {
 
     const jestMockCall = `\
 jest.mock("${block.sourceFile}", () => ({
-${jestActual}${jestMocks}})
+${jestActual}${jestMocks}}))
 `
 
     const mocks = block.imports.map(i => createExportMock(i))

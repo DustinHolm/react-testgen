@@ -9,7 +9,7 @@ function resetMockDefaultTest() {
 jest.mock(\\"./mock\\", () => ({
     __esmodule: true,
     default: (...args: any[]) => mockDefaultTest(args),
-})
+}))
 "
 `;
 
@@ -22,7 +22,7 @@ function resetMockDefaultTest() {
 jest.mock(\\"./mock\\", () => ({
     __esmodule: true,
     default: (...args: any[]) => mockDefaultTest(args),
-})
+}))
 "
 `;
 
@@ -35,7 +35,7 @@ function resetMockDefaultTest() {
 jest.mock(\\"./mock\\", () => ({
     __esmodule: true,
     default: (...args: any[]) => mockDefaultTest(args),
-})
+}))
 "
 `;
 
@@ -54,7 +54,7 @@ jest.mock(\\"./mock\\", () => ({
     namedTest: (...args: any[]) => mockNamedTest(args),
     __esmodule: true,
     default: (...args: any[]) => mockDefaultTest(args),
-})
+}))
 "
 `;
 
@@ -72,7 +72,7 @@ function resetMockNamedTest_2() {
 jest.mock(\\"./mock\\", () => ({
     namedTest_1: (...args: any[]) => mockNamedTest_1(args),
     namedTest_2: (...args: any[]) => mockNamedTest_2(args),
-})
+}))
 "
 `;
 
@@ -84,6 +84,6 @@ function resetMockNamedTest() {
 }
 jest.mock(\\"./mock\\", () => ({
     namedTest: (...args: any[]) => mockNamedTest(args),
-})
+}))
 "
 `;
