@@ -4,14 +4,14 @@ import { generateFileFor } from "./generator"
 
 export const cli = (args: string[]) => {
     if (args.length !== 1 || args.some(a => a.length === 0)) {
-        console.error("%cYou need to enter a filename!", "color: red")
+        console.error("You need to enter a filename!")
         process.exitCode = -1
         return
     }
 
     const sourcePath = resolve(args[0])
     if (!existsSync(sourcePath)) {
-        console.error("%cFile was not found!", "color: red")
+        console.error("File was not found!")
         process.exitCode = -1
         return
     }
@@ -19,7 +19,7 @@ export const cli = (args: string[]) => {
     const directory = dirname(sourcePath)
     const extension = extname(sourcePath)
     if (extension !== ".tsx") {
-        console.error("%cTarget needs to be a .tsx file!", "color: red")
+        console.error("Target needs to be a .tsx file!")
         process.exitCode = -1
         return
     }
@@ -27,11 +27,17 @@ export const cli = (args: string[]) => {
     const sourceName = basename(sourcePath, extension)
     const targetPath = resolve(directory, sourceName + ".test.tsx")
     if (existsSync(targetPath)) {
-        console.error("%cTest already exists!", "color: red")
+        console.error("Test already exists!")
         process.exitCode = -1
         return
     }
 
-    console.log("%cGenerating test...", "color: green")
-    generateFileFor(sourceName, sourcePath, targetPath)
+    console.log("Generating test...")
+    try {
+        generateFileFor(sourceName, sourcePath, targetPath)
+    } catch (e) {
+        console.error("Something went wrong while generating the test.")
+        process.exitCode = -1
+        return
+    }
 }
