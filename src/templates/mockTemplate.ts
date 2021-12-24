@@ -1,6 +1,6 @@
 import { Attribute, ClassElement, Export, ExportType, FunctionElement, ImportBlock } from "../types"
-import { createFunctionDefaults, createJSXDefaults } from "./defaultValuesTemplate"
 import { supportedTypes, toPascalCase } from "./common"
+import { createFunctionDefaults, createJSXDefaults } from "./defaultValuesTemplate"
 
 export const createMock = (block: ImportBlock): string => {
     const jestActual = block.imports.find(i =>

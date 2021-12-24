@@ -3,7 +3,7 @@ import { createResetMocksFunction } from "./resetMocksTemplate"
 
 describe("resetMocksTemplate Tests", () => {
     test("With only props", () => {
-        const props: Attribute[] = [{name: "att_1", type: "type_1"}, {name: "att_2", type: "type_2"}]
+        const props: Attribute[] = [{ name: "att_1", type: "type_1" }, { name: "att_2", type: "type_2" }]
         const mocks: ImportBlock[] = []
         const returnedString = createResetMocksFunction(props, mocks)
         expect(returnedString).toMatchSnapshot()
@@ -24,7 +24,7 @@ describe("resetMocksTemplate Tests", () => {
     })
 
     test("With mixed inputs", () => {
-        const props: Attribute[] = [{name: "att_1", type: "type_1"}, {name: "att_2", type: "type_2"}]
+        const props: Attribute[] = [{ name: "att_1", type: "type_1" }, { name: "att_2", type: "type_2" }]
         const mocks: ImportBlock[] = [getImportBlock(2)]
         const returnedString = createResetMocksFunction(props, mocks)
         expect(returnedString).toMatchSnapshot()

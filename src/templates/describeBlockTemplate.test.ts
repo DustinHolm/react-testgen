@@ -1,4 +1,4 @@
-import {createDescribeBlock} from "./describeBlockTemplate"
+import { createDescribeBlock } from "./describeBlockTemplate"
 
 describe("describeBlockTemplate Tests", () => {
     test("With name", () => {

@@ -1,4 +1,4 @@
-import { Export, ExportType, FunctionElement, ImportBlock } from "../types";
+import { Export, ExportType, FunctionElement } from "../types";
 import { createAssertion } from "./assertionsTemplate";
 
 describe("assertionsTemplate Tests", () => {
@@ -9,7 +9,7 @@ describe("assertionsTemplate Tests", () => {
             returnType: "JSX.Element",
             parameters: []
         }
-        const exportElement: Export = {name: "MockComponent", isDefault: true, element: element}
+        const exportElement: Export = { name: "MockComponent", isDefault: true, element: element }
         const returnedString = createAssertion(exportElement)
         expect(returnedString).toMatchSnapshot()
     })
@@ -21,7 +21,7 @@ describe("assertionsTemplate Tests", () => {
             returnType: "number",
             parameters: []
         }
-        const exportElement: Export = {name: "MockComponent", isDefault: true, element: element}
+        const exportElement: Export = { name: "MockComponent", isDefault: true, element: element }
         const returnedString = createAssertion(exportElement)
         expect(returnedString).toMatchSnapshot()
     })
@@ -31,9 +31,9 @@ describe("assertionsTemplate Tests", () => {
             returnsJSX: false,
             type: ExportType.Function,
             returnType: "number",
-            parameters: [{name: "num", type: "number"}, {name: "str", type: "string"}]
+            parameters: [{ name: "num", type: "number" }, { name: "str", type: "string" }]
         }
-        const exportElement: Export = {name: "MockComponent", isDefault: true, element: element}
+        const exportElement: Export = { name: "MockComponent", isDefault: true, element: element }
         const returnedString = createAssertion(exportElement)
         expect(returnedString).toMatchSnapshot()
     })

@@ -7,12 +7,12 @@ describe("propTemplate Tests", () => {
     })
 
     test("With attribute", () => {
-        const returnedString = createProp({name: "testName", type: "testType"})
+        const returnedString = createProp({ name: "testName", type: "testType" })
         expect(returnedString).toMatchSnapshot()
     })
 
     test("getReturnForType is called correctly", () => {
-        const attribute: Attribute = {name: "testName", type: "testType"}
+        const attribute: Attribute = { name: "testName", type: "testType" }
         createProp(attribute)
         expect(mockGetReturnForType).toHaveBeenCalledWith([attribute.type])
     })

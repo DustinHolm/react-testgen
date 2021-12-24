@@ -1,5 +1,5 @@
 import { Attribute, ClassElement, ExportType, FunctionElement, ImportBlock } from "../types"
-import {createMock} from "./mockTemplate"
+import { createMock } from "./mockTemplate"
 
 describe("mockTemplate Tests", () => {
     let importBlock: ImportBlock
@@ -114,12 +114,12 @@ function getClassElement(returnsJSX: boolean, numberOfParameters: number): Class
     for (let i = 0; i < numberOfParameters; i++) {
         parameters.push(getAttribute())
     }
-    
+
     return {
         type: ExportType.Class,
         returnsJSX: returnsJSX,
-        methods: [{name: "testMethod", ...getFunctionElement(returnsJSX, 0)}],
-        constructors: [{parameters: parameters}]
+        methods: [{ name: "testMethod", ...getFunctionElement(returnsJSX, 0) }],
+        constructors: [{ parameters: parameters }]
     }
 }
 
@@ -128,7 +128,7 @@ function getFunctionElement(returnsJSX: boolean, numberOfParameters: number): Fu
     for (let i = 0; i < numberOfParameters; i++) {
         parameters.push(getAttribute())
     }
-    
+
     return {
         type: ExportType.Function,
         returnsJSX: returnsJSX,
@@ -138,7 +138,7 @@ function getFunctionElement(returnsJSX: boolean, numberOfParameters: number): Fu
 }
 
 function getAttribute(): Attribute {
-    return {type: "mockType", name: "mockName"}
+    return { type: "mockType", name: "mockName" }
 }
 
 let mockCreateJSXDefaults: jest.Mock

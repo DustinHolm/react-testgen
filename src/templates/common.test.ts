@@ -1,4 +1,4 @@
-import {defaultReturnValue, getReturnForType, toPascalCase} from "./common"
+import { defaultReturnValue, getReturnForType, toPascalCase } from "./common"
 
 describe("common Tests", () => {
     describe("getReturnForType Tests", () => {
@@ -30,19 +30,19 @@ describe("common Tests", () => {
     describe("namingUtils Tests", () => {
         test("With empty string", () => {
             const returnedString = toPascalCase("")
-            
+
             expect(returnedString).toEqual("")
         })
-    
+
         test("With one letter", () => {
             const returnedString = toPascalCase("a")
-            
+
             expect(returnedString).toEqual("A")
         })
-    
+
         test("With multiple letters", () => {
             const returnedString = toPascalCase("abc")
-            
+
             expect(returnedString).toEqual("Abc")
         })
     })

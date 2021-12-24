@@ -18,7 +18,7 @@ export const createDefaultImports = (): string => {
     return 'import { render, screen } from "@testing-library/react"'
 }
 
-export const createComponentImport = (exportedElement: Export, fileName: string):string => {
+export const createComponentImport = (exportedElement: Export, fileName: string): string => {
     const exportName = exportedElement.isDefault ? exportedElement.name : `{ ${exportedElement.name} }`
     return `import ${exportName} from "./${fileName}"`
 }
