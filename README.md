@@ -24,7 +24,8 @@ file already exists, it will stop the generator without overwriting the existing
 file.
 
 It currently supports React.Components, React.FC and other classes and functions
-that return JSX.Element.
+that return JSX.Element. Used interfaces for props currently need to be included
+as part of the target file.
 
 ## Example
 
@@ -130,7 +131,14 @@ test("Prop is displayed", () => {
 Because react-testgen uses the TypeScript compiler via the amazing
 package [ts-morph](https://github.com/dsherret/ts-morph), the resulting test
 depends on the possible type inference through TypeScript. If the generated
-methods use unexpected types, it may help to add explicit type annotations. 
+methods use unexpected types, it may help to add explicit type annotations.
+
+If props, in specific, are not deconstructured correctly and you end up with
+a generated type "...Props: any", try adding the type annotation 
+": FC<YourInterface>" or "extends Component<YourInterface, ...>" to the React
+component (using "FC/Component" instead of "React.FC/React.Component). 
+As an alternative you can annotate the prop parameter "(props: YourInterface) 
+=> {}".
 
 If your issues are not caused by a lack of type inference, feel free to [open a
 issue/bug at GitHub](https://github.com/DustinHolm/react-testgen/issues).
