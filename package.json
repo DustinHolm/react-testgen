@@ -13,7 +13,7 @@
   },
   "name": "react-testgen",
   "version": "1.0.0",
-  "description": "A generator that scaffolds test files for React FCs",
+  "description": "A generator that scaffolds unit tests for React components",
   "bin": {
     "react-testgen": "bin/react-testgen"
   },

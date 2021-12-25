@@ -37,6 +37,7 @@ export const cli = (args: string[]) => {
         generateFileFor(sourceName, sourcePath, targetPath)
     } catch (e) {
         console.error("Something went wrong while generating the test.")
+        console.error(e)
         process.exitCode = -1
         return
     }
