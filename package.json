@@ -16,11 +16,18 @@
   "bin": {
     "react-testgen": "bin/react-testgen"
   },
-  "private": "true",
+  "homepage": "https://github.com/DustinHolm/react-testgen",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DustinHolm/react-testgen.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DustinHolm/react-testgen/issues"
+  },
   "scripts": {
-    "start": "tsc && node bin/react-testgen",
+    "start": "node bin/react-testgen",
     "build": "tsc",
-    "test": "jest --watch --passWithNoTests --coverage"
+    "test": "jest --watch --coverage"
   },
   "author": "Dustin Holm",
   "license": "MIT"
