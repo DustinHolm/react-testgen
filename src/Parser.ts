@@ -1,7 +1,7 @@
 import { existsSync } from "fs"
+import { resolve } from "path"
 import { ConstructorDeclaration, Project, PropertySignature, SourceFile, SyntaxKind } from "ts-morph"
 import { Attribute, ClassElement, Constructor, Export, ExportType, FunctionElement, HasReturnAndParameters, ImportBlock, InterfaceElement, MethodElement, ParserResult, VariableElement } from "./types"
-import { createModulePath } from "./utils"
 
 
 class Parser {
@@ -78,7 +78,7 @@ class Parser {
                 )
 
             if (importModuleIsInternal) {
-                const path = createModulePath(this.source.getDirectoryPath(), importModule)
+                const path = resolve(this.source.getDirectoryPath(), importModule)
                 const fileExtension = existsSync(path + ".tsx") ? ".tsx" : ".ts"
                 if (fileExtension === ".ts" && !existsSync(path + fileExtension)) {
                     throw Error(`This import was not found: ${path + fileExtension}`)

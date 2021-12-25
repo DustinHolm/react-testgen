@@ -1,9 +1,5 @@
-import { normalize, resolve } from "path"
 import { Attribute, ClassElement, Export, ExportType, FunctionElement } from "./types"
 
-export const createModulePath = (directory: string, module: string): string => {
-    return normalize(resolve(directory, module))
-}
 
 export const getPropsForExport = (givenExport: Export): Attribute[] => {
     switch (givenExport.element?.type) {
