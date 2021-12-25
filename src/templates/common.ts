@@ -7,7 +7,9 @@ export const getReturnForType = (type: string): string => {
     switch (type) {
         case "number": return "1234"
         case "string": return '"abcd"'
+        case "boolean": return "true"
         case "undefined": return "undefined"
+        case "any": return "undefined //TODO: If this is not explicitly 'any', you should check your type annotations."
         default: return defaultReturnValue
     }
 }

@@ -12,6 +12,11 @@ describe("common Tests", () => {
             expect(returnedString).not.toEqual(defaultReturnValue)
         })
 
+        test("For boolean", () => {
+            const returnedString = getReturnForType("boolean")
+            expect(returnedString).not.toEqual(defaultReturnValue)
+        })
+
         test("For undefined", () => {
             const returnedString = getReturnForType("undefined")
             expect(returnedString).not.toEqual(defaultReturnValue)
@@ -19,7 +24,7 @@ describe("common Tests", () => {
 
         test("For any", () => {
             const returnedString = getReturnForType("any")
-            expect(returnedString).toEqual(defaultReturnValue)
+            expect(returnedString).not.toEqual(defaultReturnValue)
         })
 
         test("For a not existing type", () => {
