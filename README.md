@@ -115,7 +115,7 @@ This creates simple methods to write tests like the following
 ```
 test("Child is rendered", () => {
     whenComponentIsRendered()
-    thenChildIsRendered()
+    thenChildIsRendered(true)
 })
 
 test("Prop is displayed", () => {
