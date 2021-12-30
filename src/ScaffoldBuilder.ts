@@ -1,4 +1,5 @@
 import { createAssertion } from "./templates/assertionsTemplate"
+import { supportedTypes } from "./templates/common"
 import { createComponentRenderFunction } from "./templates/componentRenderingTemplate"
 import { createDescribeBlock } from "./templates/describeBlockTemplate"
 import { createComponentImport, createDefaultImports } from "./templates/importTemplate"
@@ -30,15 +31,22 @@ class ScaffoldBuilder {
     build(): string {
         const jsxExports = this.exports.filter(e => e.element?.returnsJSX === true)
         const mainExport: Export | undefined = jsxExports.find(e => e.isDefault) ?? jsxExports[0]
-        const props = mainExport !== undefined
-            ? getPropsForExport(mainExport)
-            : []
+        if (mainExport === undefined) throw Error("No exported React component found!")
 
-        const mocks = this.imports.filter(i => i.isInternal)
+        const props = getPropsForExport(mainExport)
+
+        const mocks = this.imports.filter(ib => 
+            ib.isInternal
+            && ib.imports.find(i =>
+                i.element !== undefined
+                && (i.element.returnsJSX
+                    || supportedTypes.includes(i.element.type))
+            ) !== undefined
+        )
 
         const importsAsStrings: string[] = []
         importsAsStrings.push(createDefaultImports())
-        if (mainExport !== undefined) importsAsStrings.push(createComponentImport(mainExport, this.name))
+        importsAsStrings.push(createComponentImport(mainExport, this.name))
         const importsString = importsAsStrings.join("\n")
 
         const describeString = createDescribeBlock(this.name)
@@ -53,9 +61,7 @@ class ScaffoldBuilder {
             .map(p => createProp(p))
             .join("\n")
 
-        const componentRenderString = mainExport !== undefined
-            ? createComponentRenderFunction(mainExport.name, props)
-            : ""
+        const componentRenderString = createComponentRenderFunction(mainExport.name, props)
 
         const assertionsString = mocks
             .flatMap(m => m.imports)

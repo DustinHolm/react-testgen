@@ -1,7 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Integration Tests ReactClass matches snapshot 1`] = `
-"import { render, screen } from \\"@testing-library/react\\"
+exports[`generator integration Tests ReactClass matches snapshot 1`] = `
+Array [
+  Array [
+    Array [
+      "mockOutput",
+      "import { render, screen } from \\"@testing-library/react\\"
 import ReactClass from \\"./ReactClass\\"
 
 
@@ -79,11 +83,18 @@ function thenReactClassDependencyWasCalledWith(props: any) {
 function thenUtilitySquareFunctionWasCalledWith(value: number) {
     expect(mockUtilitySquareFunction).toHaveBeenCalledWith(value)
 }
-"
+",
+    ],
+  ],
+]
 `;
 
-exports[`Integration Tests ReactFC matches snapshot 1`] = `
-"import { render, screen } from \\"@testing-library/react\\"
+exports[`generator integration Tests ReactFC matches snapshot 1`] = `
+Array [
+  Array [
+    Array [
+      "mockOutput",
+      "import { render, screen } from \\"@testing-library/react\\"
 import ReactFC from \\"./ReactFC\\"
 
 
@@ -161,11 +172,18 @@ function thenReactFCDependencyWasCalledWith(props: any) {
 function thenUtilitySquareFunctionWasCalledWith(value: number) {
     expect(mockUtilitySquareFunction).toHaveBeenCalledWith(value)
 }
-"
+",
+    ],
+  ],
+]
 `;
 
-exports[`Integration Tests ReactFunction matches snapshot 1`] = `
-"import { render, screen } from \\"@testing-library/react\\"
+exports[`generator integration Tests ReactFunction matches snapshot 1`] = `
+Array [
+  Array [
+    Array [
+      "mockOutput",
+      "import { render, screen } from \\"@testing-library/react\\"
 import ReactFunction from \\"./ReactFunction\\"
 
 
@@ -243,5 +261,97 @@ function thenReactFCDependencyWasCalledWith(props: any) {
 function thenUtilitySquareFunctionWasCalledWith(value: number) {
     expect(mockUtilitySquareFunction).toHaveBeenCalledWith(value)
 }
-"
+",
+    ],
+  ],
+]
+`;
+
+exports[`generator integration Tests ReactMemoizedFC matches snapshot 1`] = `
+Array [
+  Array [
+    Array [
+      "mockOutput",
+      "import { render, screen } from \\"@testing-library/react\\"
+import ReactMemoizedFC from \\"./ReactMemoizedFC\\"
+
+
+describe(\\"ReactMemoizedFC Tests\\", () => {
+    beforeEach(() => {
+        resetMocks()
+    })
+
+    test(\\"Component renders\\", () => {
+        whenComponentIsRendered()
+        screen.debug()
+    })
+})
+
+function resetMocks() {
+    resetPropContent()
+    resetMockReactFCDependency()
+    resetMockUtilitySquareFunction()
+}
+
+let mockReactFCDependency: jest.Mock
+let mockReactFCDependencyReturn: JSX.Element
+function resetMockReactFCDependency() {
+    mockReactFCDependencyReturn = <span data-testid={\\"mockReactFCDependency\\"} />
+    mockReactFCDependency = jest.fn(() => mockReactFCDependencyReturn)
+}
+
+jest.mock(\\"./ReactFCDependency\\", () => ({
+    __esmodule: true,
+    default: (...args: any[]) => mockReactFCDependency(args),
+}))
+
+let mockUtilitySquareFunction: jest.Mock
+let mockUtilitySquareFunctionReturn: number
+function resetMockUtilitySquareFunction() {
+    mockUtilitySquareFunctionReturn = 1234
+    mockUtilitySquareFunction = jest.fn(() => mockUtilitySquareFunctionReturn)
+}
+function givenMockUtilitySquareFunctionReturn(given: number) {
+    mockUtilitySquareFunctionReturn = given
+}
+
+jest.mock(\\"./utilityFunctions\\", () => ({
+    utilitySquareFunction: (...args: any[]) => mockUtilitySquareFunction(args),
+}))
+
+let propContent: string
+function resetPropContent() {
+    propContent = \\"abcd\\"
+}
+function givenPropContent(given: string) {
+    propContent = given
+}
+
+function whenComponentIsRendered() {
+    return render(
+        <ReactMemoizedFC
+            content={propContent}
+        />
+    )
+}
+
+function thenReactFCDependencyIsRendered(expected: boolean) {
+    if (expected) {
+        expect(screen.getByTestId(\\"mockReactFCDependency\\")).toBeInTheDocument()
+    } else {
+        expect(screen.queryByTestId(\\"mockReactFCDependency\\")).toBeNull()
+    }
+}
+
+function thenReactFCDependencyWasCalledWith(props: any) {
+    expect(mockReactFCDependency).toHaveBeenCalledWith(props)
+}
+
+function thenUtilitySquareFunctionWasCalledWith(value: number) {
+    expect(mockUtilitySquareFunction).toHaveBeenCalledWith(value)
+}
+",
+    ],
+  ],
+]
 `;

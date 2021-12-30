@@ -182,15 +182,15 @@ class Parser {
             if (existingExport !== undefined) {
                 const arrowFunction = vaDe.getInitializerIfKind(SyntaxKind.ArrowFunction)
                 const otherFunction = vaDe.getInitializerIfKind(SyntaxKind.FunctionExpression)
+                const aliasType = vaDe.getChildrenOfKind(SyntaxKind.TypeReference)
+                    .map(type => type.getText())
+                    .shift()
 
                 if (arrowFunction) {
-                    existingExport.element = this.getFunctionElement(arrowFunction)
+                    existingExport.element = this.getFunctionElement(arrowFunction, aliasType)
                 } else if (otherFunction) {
-                    existingExport.element = this.getFunctionElement(otherFunction)
+                    existingExport.element = this.getFunctionElement(otherFunction, aliasType)
                 } else {
-                    const aliasType = vaDe.getChildrenOfKind(SyntaxKind.TypeReference)
-                        .map(typeRef => typeRef.getText())
-                        .shift()
                     const variableType = aliasType ?? vaDe.getType().getText()
 
                     existingExport.element = {
@@ -210,8 +210,16 @@ class Parser {
         const exportNames: Export[] = []
 
         defaultExports.forEach(exAs => {
+            const expression = exAs.getExpression()
+            const wrapperExpression = expression.asKind(SyntaxKind.CallExpression)
+                ?.getArguments()
+                ?.find(a => a.getKind() === SyntaxKind.Identifier)
+            const name = wrapperExpression !== undefined
+                ? wrapperExpression.getText()
+                : expression.getText()
+
             exportNames.push({
-                name: exAs.getExpression().getText(),
+                name: name,
                 isDefault: true
             })
         })
@@ -229,9 +237,12 @@ class Parser {
     }
 
 
-    private getFunctionElement(declaration: HasReturnAndParameters): FunctionElement {
+    private getFunctionElement(
+        declaration: HasReturnAndParameters,
+        aliasType?: string
+    ): FunctionElement {
         const returnType = declaration.getReturnType().getText()
-        const attributes: Attribute[] = this.getAttributes(declaration)
+        const attributes: Attribute[] = this.getAttributes(declaration, aliasType)
 
         return {
             returnsJSX: returnType.startsWith("JSX"),
@@ -241,9 +252,16 @@ class Parser {
         }
     }
 
-    private getAttributes(declaration: HasReturnAndParameters | ConstructorDeclaration): Attribute[] {
+    private getAttributes(
+        declaration: HasReturnAndParameters | ConstructorDeclaration,
+        aliasType?: string
+    ): Attribute[] {
         return declaration.getParameters().flatMap(p => {
-            const typeName = p.getType().getText()
+            let typeName = p.getType().getText()
+            if (typeName === "any" && aliasType !== undefined) {
+                typeName = aliasType
+            }
+
             const correspondingInterface = this.interfaces.find(i =>
                 i.name === typeName
                 || this.isWrappedInterface(typeName, i.name))
