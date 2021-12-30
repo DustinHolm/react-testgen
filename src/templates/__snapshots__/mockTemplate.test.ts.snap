@@ -6,6 +6,7 @@ let mockDefaultTestReturn: JSX.Element
 function resetMockDefaultTest() {
     mockedReset
 }
+
 jest.mock(\\"./mock\\", () => ({
     __esmodule: true,
     default: (...args: any[]) => mockDefaultTest(args),
@@ -19,6 +20,10 @@ let mockDefaultTestReturn: mockReturn
 function resetMockDefaultTest() {
     mockedReset
 }
+function givenMockDefaultTestReturn(given: mockReturn) {
+    mockDefaultTestReturn = given
+}
+
 jest.mock(\\"./mock\\", () => ({
     __esmodule: true,
     default: (...args: any[]) => mockDefaultTest(args),
@@ -32,6 +37,7 @@ let mockDefaultTestReturn: JSX.Element
 function resetMockDefaultTest() {
     mockedReset
 }
+
 jest.mock(\\"./mock\\", () => ({
     __esmodule: true,
     default: (...args: any[]) => mockDefaultTest(args),
@@ -45,11 +51,19 @@ let mockNamedTestReturn: mockReturn
 function resetMockNamedTest() {
     mockedReset
 }
+function givenMockNamedTestReturn(given: mockReturn) {
+    mockNamedTestReturn = given
+}
+
 let mockDefaultTest: jest.Mock
 let mockDefaultTestReturn: mockReturn
 function resetMockDefaultTest() {
     mockedReset
 }
+function givenMockDefaultTestReturn(given: mockReturn) {
+    mockDefaultTestReturn = given
+}
+
 jest.mock(\\"./mock\\", () => ({
     namedTest: (...args: any[]) => mockNamedTest(args),
     __esmodule: true,
@@ -64,11 +78,19 @@ let mockNamedTest_1Return: mockReturn
 function resetMockNamedTest_1() {
     mockedReset
 }
+function givenMockNamedTest_1Return(given: mockReturn) {
+    mockNamedTest_1Return = given
+}
+
 let mockNamedTest_2: jest.Mock
 let mockNamedTest_2Return: mockReturn
 function resetMockNamedTest_2() {
     mockedReset
 }
+function givenMockNamedTest_2Return(given: mockReturn) {
+    mockNamedTest_2Return = given
+}
+
 jest.mock(\\"./mock\\", () => ({
     namedTest_1: (...args: any[]) => mockNamedTest_1(args),
     namedTest_2: (...args: any[]) => mockNamedTest_2(args),
@@ -82,6 +104,10 @@ let mockNamedTestReturn: mockReturn
 function resetMockNamedTest() {
     mockedReset
 }
+function givenMockNamedTestReturn(given: mockReturn) {
+    mockNamedTestReturn = given
+}
+
 jest.mock(\\"./mock\\", () => ({
     namedTest: (...args: any[]) => mockNamedTest(args),
 }))

@@ -1,12 +1,11 @@
 import { Attribute, ClassElement, Export, ExportType, FunctionElement, ImportBlock } from "../types"
-import { supportedTypes, toPascalCase } from "./common"
+import { getMockName, supportedTypes, toPascalCase } from "./common"
 import { createFunctionDefaults, createJSXDefaults } from "./defaultValuesTemplate"
 
 export const createMock = (block: ImportBlock): string => {
     const jestActual = block.imports.find(i =>
         i.element === undefined
-        || (!supportedTypes.includes(i.element.type)
-            && !i.element.returnsJSX))
+        || (!supportedTypes.includes(i.element.type) && !i.element.returnsJSX))
         ? `\
     ...jest.requireActual("${block.sourceFile}"),
 `
@@ -14,14 +13,14 @@ export const createMock = (block: ImportBlock): string => {
 
     const jestMocks = block.imports.map(i => createJestObject(i)).join("")
 
-    const jestMockCall = `\
+    const jestMockCall = `
 jest.mock("${block.sourceFile}", () => ({
 ${jestActual}${jestMocks}}))
 `
 
     const mocks = block.imports.map(i => createExportMock(i))
 
-    return mocks.join("") + jestMockCall
+    return mocks.join("\n") + jestMockCall
 }
 
 const createJestObject = (importElement: Export): string => {
@@ -38,7 +37,7 @@ const createJestObject = (importElement: Export): string => {
 }
 
 const createExportMock = (exportElement: Export): string => {
-    const mockName = "mock" + toPascalCase(exportElement.name)
+    const mockName = getMockName(exportElement.name)
     const element = exportElement.element
 
     if (element?.returnsJSX === true) {
@@ -78,6 +77,9 @@ let ${name}: jest.Mock
 let ${name}Return: ${functionElement.returnType}
 function reset${toPascalCase(name)}() {
 ${defaults}
+}
+function given${toPascalCase(name)}Return(given: ${functionElement.returnType}) {
+    ${name}Return = given
 }
 `
 }

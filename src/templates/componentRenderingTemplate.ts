@@ -1,5 +1,5 @@
 import { Attribute } from "../types"
-import { toPascalCase } from "./common"
+import { getPropName } from "./common"
 
 export const createComponentRenderFunction = (name: string, props: Attribute[]): string => {
     const renderCall = props.length === 0
@@ -23,6 +23,6 @@ ${renderCall}
 
 const createPropCall = (prop: Attribute): string => {
     return `\
-            ${prop.name}={mockProp${toPascalCase(prop.name)}}\
+            ${prop.name}={${getPropName(prop.name)}}\
 `
 }

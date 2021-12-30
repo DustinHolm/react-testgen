@@ -1,5 +1,5 @@
 import { Export, ExportType, FunctionElement } from "../types";
-import { toPascalCase } from "./common";
+import { getMockName, toPascalCase } from "./common";
 
 export const createAssertion = (mock: Export): string => {
     if (mock.element?.returnsJSX === true) {
@@ -13,7 +13,7 @@ export const createAssertion = (mock: Export): string => {
 
 const createJSXAssertion = (mock: Export): string => {
     const name = toPascalCase(mock.name)
-    const mockName = "mock" + name
+    const mockName = getMockName(mock.name)
     const testId = mockName
 
     return `\
@@ -33,7 +33,7 @@ function then${name}WasCalledWith(props: any) {
 
 const createFunctionAssertion = (mock: Export): string => {
     const name = toPascalCase(mock.name)
-    const mockName = "mock" + name
+    const mockName = getMockName(mock.name)
     const parameters = (mock.element as FunctionElement).parameters
 
     if (parameters.length === 0) {

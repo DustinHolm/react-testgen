@@ -2,8 +2,8 @@
 
 exports[`resetMocksTemplate Tests With mixed inputs 1`] = `
 "function resetMocks() {
-    resetMockPropAtt_1()
-    resetMockPropAtt_2()
+    resetPropAtt_1()
+    resetPropAtt_2()
     resetMockImport_0()
     resetMockImport_1()
 }
@@ -20,8 +20,8 @@ exports[`resetMocksTemplate Tests With one mocked import block 1`] = `
 
 exports[`resetMocksTemplate Tests With only props 1`] = `
 "function resetMocks() {
-    resetMockPropAtt_1()
-    resetMockPropAtt_2()
+    resetPropAtt_1()
+    resetPropAtt_2()
 }
 "
 `;

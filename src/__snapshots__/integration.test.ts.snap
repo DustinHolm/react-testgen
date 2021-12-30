@@ -17,7 +17,7 @@ describe(\\"ReactClass Tests\\", () => {
 })
 
 function resetMocks() {
-    resetMockPropContent()
+    resetPropContent()
     resetMockReactClassDependency()
     resetMockUtilitySquareFunction()
 }
@@ -28,6 +28,7 @@ function resetMockReactClassDependency() {
     mockReactClassDependencyReturn = <span data-testid={\\"mockReactClassDependency\\"} />
     mockReactClassDependency = jest.fn(() => mockReactClassDependencyReturn)
 }
+
 jest.mock(\\"./ReactClassDependency\\", () => ({
     __esmodule: true,
     default: (...args: any[]) => mockReactClassDependency(args),
@@ -39,22 +40,26 @@ function resetMockUtilitySquareFunction() {
     mockUtilitySquareFunctionReturn = 1234
     mockUtilitySquareFunction = jest.fn(() => mockUtilitySquareFunctionReturn)
 }
+function givenMockUtilitySquareFunctionReturn(given: number) {
+    mockUtilitySquareFunctionReturn = given
+}
+
 jest.mock(\\"./utilityFunctions\\", () => ({
     utilitySquareFunction: (...args: any[]) => mockUtilitySquareFunction(args),
 }))
 
-let mockPropContent: string
-function resetMockPropContent() {
-    mockPropContent = \\"abcd\\"
+let propContent: string
+function resetPropContent() {
+    propContent = \\"abcd\\"
 }
-function givenMockPropContent(given: string) {
-    mockPropContent = given
+function givenPropContent(given: string) {
+    propContent = given
 }
 
 function whenComponentIsRendered() {
     return render(
         <ReactClass
-            content={mockPropContent}
+            content={propContent}
         />
     )
 }
@@ -94,7 +99,7 @@ describe(\\"ReactFC Tests\\", () => {
 })
 
 function resetMocks() {
-    resetMockPropContent()
+    resetPropContent()
     resetMockReactFCDependency()
     resetMockUtilitySquareFunction()
 }
@@ -105,6 +110,7 @@ function resetMockReactFCDependency() {
     mockReactFCDependencyReturn = <span data-testid={\\"mockReactFCDependency\\"} />
     mockReactFCDependency = jest.fn(() => mockReactFCDependencyReturn)
 }
+
 jest.mock(\\"./ReactFCDependency\\", () => ({
     __esmodule: true,
     default: (...args: any[]) => mockReactFCDependency(args),
@@ -116,22 +122,26 @@ function resetMockUtilitySquareFunction() {
     mockUtilitySquareFunctionReturn = 1234
     mockUtilitySquareFunction = jest.fn(() => mockUtilitySquareFunctionReturn)
 }
+function givenMockUtilitySquareFunctionReturn(given: number) {
+    mockUtilitySquareFunctionReturn = given
+}
+
 jest.mock(\\"./utilityFunctions\\", () => ({
     utilitySquareFunction: (...args: any[]) => mockUtilitySquareFunction(args),
 }))
 
-let mockPropContent: string
-function resetMockPropContent() {
-    mockPropContent = \\"abcd\\"
+let propContent: string
+function resetPropContent() {
+    propContent = \\"abcd\\"
 }
-function givenMockPropContent(given: string) {
-    mockPropContent = given
+function givenPropContent(given: string) {
+    propContent = given
 }
 
 function whenComponentIsRendered() {
     return render(
         <ReactFC
-            content={mockPropContent}
+            content={propContent}
         />
     )
 }
@@ -171,7 +181,7 @@ describe(\\"ReactFunction Tests\\", () => {
 })
 
 function resetMocks() {
-    resetMockPropContent()
+    resetPropContent()
     resetMockReactFCDependency()
     resetMockUtilitySquareFunction()
 }
@@ -182,6 +192,7 @@ function resetMockReactFCDependency() {
     mockReactFCDependencyReturn = <span data-testid={\\"mockReactFCDependency\\"} />
     mockReactFCDependency = jest.fn(() => mockReactFCDependencyReturn)
 }
+
 jest.mock(\\"./ReactFCDependency\\", () => ({
     __esmodule: true,
     default: (...args: any[]) => mockReactFCDependency(args),
@@ -193,22 +204,26 @@ function resetMockUtilitySquareFunction() {
     mockUtilitySquareFunctionReturn = 1234
     mockUtilitySquareFunction = jest.fn(() => mockUtilitySquareFunctionReturn)
 }
+function givenMockUtilitySquareFunctionReturn(given: number) {
+    mockUtilitySquareFunctionReturn = given
+}
+
 jest.mock(\\"./utilityFunctions\\", () => ({
     utilitySquareFunction: (...args: any[]) => mockUtilitySquareFunction(args),
 }))
 
-let mockPropContent: string
-function resetMockPropContent() {
-    mockPropContent = \\"abcd\\"
+let propContent: string
+function resetPropContent() {
+    propContent = \\"abcd\\"
 }
-function givenMockPropContent(given: string) {
-    mockPropContent = given
+function givenPropContent(given: string) {
+    propContent = given
 }
 
 function whenComponentIsRendered() {
     return render(
         <ReactFunction
-            content={mockPropContent}
+            content={propContent}
         />
     )
 }
