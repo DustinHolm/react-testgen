@@ -257,14 +257,12 @@ class Parser {
         aliasType?: string
     ): Attribute[] {
         return declaration.getParameters().flatMap(p => {
-            let typeName = p.getType().getText()
-            if (typeName === "any" && aliasType !== undefined) {
-                typeName = aliasType
-            }
+            const typeName = p.getType().getText()
 
-            const correspondingInterface = this.interfaces.find(i =>
-                i.name === typeName
-                || this.isWrappedInterface(typeName, i.name))
+            const correspondingInterface = (typeName === "any" && aliasType !== undefined)
+                ? this.getCorrespondingInterface(aliasType)
+                : this.getCorrespondingInterface(typeName)
+
             if (correspondingInterface !== undefined) {
                 return correspondingInterface.attributes
             } else {
@@ -275,6 +273,11 @@ class Parser {
             }
         })
     }
+
+    private getCorrespondingInterface = (typeName: string) =>
+        this.interfaces.find(i =>
+            i.name === typeName
+            || this.isWrappedInterface(typeName, i.name))
 
     private isWrappedInterface(given: string, expected: string): boolean {
         return (given.includes("import(")
