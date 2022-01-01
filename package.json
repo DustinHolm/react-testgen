@@ -16,13 +16,13 @@
   "bin": {
     "react-testgen": "bin/react-testgen"
   },
-  "homepage": "https://github.com/DustinHolm/react-testgen",
+  "homepage": "https://github.com/react-testgen/react-testgen",
   "repository": {
     "type": "git",
-    "url": "https://github.com/DustinHolm/react-testgen.git"
+    "url": "https://github.com/react-testgen/react-testgen.git"
   },
   "bugs": {
-    "url": "https://github.com/DustinHolm/react-testgen/issues"
+    "url": "https://github.com/react-testgen/react-testgen/issues"
   },
   "scripts": {
     "start": "node bin/react-testgen",
