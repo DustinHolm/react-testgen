@@ -140,8 +140,8 @@ component (using "FC/Component" instead of "React.FC/React.Component).
 As an alternative you can annotate the prop parameter "(props: YourInterface) 
 => {}".
 
-If your issues are not caused by a lack of type inference, feel free to [open a
-issue/bug at GitHub](https://github.com/DustinHolm/react-testgen/issues).
+If your issues are not caused by a lack of type inference, feel free to 
+[open a issue/bug at GitHub](https://github.com/react-testgen/react-testgen/issues).
 
 ## Roadmap
 
@@ -149,8 +149,8 @@ issue/bug at GitHub](https://github.com/DustinHolm/react-testgen/issues).
  - Option to directly generate Snapshot tests
  - Handling parameters with Interface/Object types better
 
-If you have some features that you would like to see added, please [open a issue
-/enhancement at GitHub](https://github.com/DustinHolm/react-testgen/issues).
+If you have some features that you would like to see added, please 
+[open a issue/enhancement at GitHub](https://github.com/react-testgen/react-testgen/issues).
 
 ## License
 
