@@ -1,4 +1,35 @@
 {
+  "name": "react-testgen",
+  "version": "1.0.1",
+  "description": "A generator that scaffolds unit tests for React components",
+  "keywords": [
+    "react",
+    "typescript",
+    "jest",
+    "unit test",
+    "unit test generator",
+    "scaffold",
+    "scaffolding",
+    "boilerplate"
+  ],
+  "author": "Dustin Holm",
+  "license": "MIT",
+  "homepage": "https://github.com/react-testgen/react-testgen",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/react-testgen/react-testgen.git"
+  },
+  "bugs": {
+    "url": "https://github.com/react-testgen/react-testgen/issues"
+  },
+  "bin": {
+    "react-testgen": "bin/react-testgen"
+  },
+  "scripts": {
+    "start": "node bin/react-testgen",
+    "build": "tsc",
+    "test": "jest --watch --coverage"
+  },
   "dependencies": {
     "@types/react": "^17.0.37",
     "ts-morph": "^12.2.0",
@@ -9,26 +40,5 @@
     "@types/node": "^16.11.11",
     "jest": "^27.3.1",
     "ts-jest": "^27.0.7"
-  },
-  "name": "react-testgen",
-  "version": "1.0.1",
-  "description": "A generator that scaffolds unit tests for React components",
-  "bin": {
-    "react-testgen": "bin/react-testgen"
-  },
-  "homepage": "https://github.com/react-testgen/react-testgen",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/react-testgen/react-testgen.git"
-  },
-  "bugs": {
-    "url": "https://github.com/react-testgen/react-testgen/issues"
-  },
-  "scripts": {
-    "start": "node bin/react-testgen",
-    "build": "tsc",
-    "test": "jest --watch --coverage"
-  },
-  "author": "Dustin Holm",
-  "license": "MIT"
+  }
 }
