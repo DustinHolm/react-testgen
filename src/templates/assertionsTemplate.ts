@@ -26,7 +26,7 @@ function then${name}IsRendered(expected: boolean) {
 }
 
 function then${name}WasCalledWith(props: any) {
-    expect(${mockName}).toHaveBeenCalledWith(props)
+    expect(${mockName}).toHaveBeenCalledWith([props])
 }
 `
 }
@@ -55,7 +55,7 @@ function then${name}WasCalled(expected: boolean) {
 
     return `\
 function then${name}WasCalledWith(${parameterString}) {
-    expect(${mockName}).toHaveBeenCalledWith(${parameterCallString})
+    expect(${mockName}).toHaveBeenCalledWith([${parameterCallString}])
 }
 `
 }

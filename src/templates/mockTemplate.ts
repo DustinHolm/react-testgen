@@ -26,7 +26,7 @@ ${jestActual}${jestMocks}}))
 const createJestObject = (importElement: Export): string => {
     if (importElement.isDefault) {
         return `\
-    __esmodule: true,
+    __esModule: true,
     default: (...args: any[]) => mock${toPascalCase(importElement.name)}(args),
 `
     } else {

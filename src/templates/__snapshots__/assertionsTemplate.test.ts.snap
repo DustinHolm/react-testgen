@@ -10,14 +10,14 @@ exports[`assertionsTemplate Tests For React component 1`] = `
 }
 
 function thenMockComponentWasCalledWith(props: any) {
-    expect(mockMockComponent).toHaveBeenCalledWith(props)
+    expect(mockMockComponent).toHaveBeenCalledWith([props])
 }
 "
 `;
 
 exports[`assertionsTemplate Tests For function with parameters 1`] = `
 "function thenMockComponentWasCalledWith(num: number, str: string) {
-    expect(mockMockComponent).toHaveBeenCalledWith(num, str)
+    expect(mockMockComponent).toHaveBeenCalledWith([num, str])
 }
 "
 `;

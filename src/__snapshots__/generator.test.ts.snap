@@ -34,7 +34,7 @@ function resetMockReactClassDependency() {
 }
 
 jest.mock(\\"./ReactClassDependency\\", () => ({
-    __esmodule: true,
+    __esModule: true,
     default: (...args: any[]) => mockReactClassDependency(args),
 }))
 
@@ -77,11 +77,11 @@ function thenReactClassDependencyIsRendered(expected: boolean) {
 }
 
 function thenReactClassDependencyWasCalledWith(props: any) {
-    expect(mockReactClassDependency).toHaveBeenCalledWith(props)
+    expect(mockReactClassDependency).toHaveBeenCalledWith([props])
 }
 
 function thenUtilitySquareFunctionWasCalledWith(value: number) {
-    expect(mockUtilitySquareFunction).toHaveBeenCalledWith(value)
+    expect(mockUtilitySquareFunction).toHaveBeenCalledWith([value])
 }
 ",
     ],
@@ -123,7 +123,7 @@ function resetMockReactFCDependency() {
 }
 
 jest.mock(\\"./ReactFCDependency\\", () => ({
-    __esmodule: true,
+    __esModule: true,
     default: (...args: any[]) => mockReactFCDependency(args),
 }))
 
@@ -166,11 +166,11 @@ function thenReactFCDependencyIsRendered(expected: boolean) {
 }
 
 function thenReactFCDependencyWasCalledWith(props: any) {
-    expect(mockReactFCDependency).toHaveBeenCalledWith(props)
+    expect(mockReactFCDependency).toHaveBeenCalledWith([props])
 }
 
 function thenUtilitySquareFunctionWasCalledWith(value: number) {
-    expect(mockUtilitySquareFunction).toHaveBeenCalledWith(value)
+    expect(mockUtilitySquareFunction).toHaveBeenCalledWith([value])
 }
 ",
     ],
@@ -212,7 +212,7 @@ function resetMockReactFCDependency() {
 }
 
 jest.mock(\\"./ReactFCDependency\\", () => ({
-    __esmodule: true,
+    __esModule: true,
     default: (...args: any[]) => mockReactFCDependency(args),
 }))
 
@@ -255,11 +255,11 @@ function thenReactFCDependencyIsRendered(expected: boolean) {
 }
 
 function thenReactFCDependencyWasCalledWith(props: any) {
-    expect(mockReactFCDependency).toHaveBeenCalledWith(props)
+    expect(mockReactFCDependency).toHaveBeenCalledWith([props])
 }
 
 function thenUtilitySquareFunctionWasCalledWith(value: number) {
-    expect(mockUtilitySquareFunction).toHaveBeenCalledWith(value)
+    expect(mockUtilitySquareFunction).toHaveBeenCalledWith([value])
 }
 ",
     ],
@@ -301,7 +301,7 @@ function resetMockReactFCDependency() {
 }
 
 jest.mock(\\"./ReactFCDependency\\", () => ({
-    __esmodule: true,
+    __esModule: true,
     default: (...args: any[]) => mockReactFCDependency(args),
 }))
 
@@ -344,11 +344,11 @@ function thenReactFCDependencyIsRendered(expected: boolean) {
 }
 
 function thenReactFCDependencyWasCalledWith(props: any) {
-    expect(mockReactFCDependency).toHaveBeenCalledWith(props)
+    expect(mockReactFCDependency).toHaveBeenCalledWith([props])
 }
 
 function thenUtilitySquareFunctionWasCalledWith(value: number) {
-    expect(mockUtilitySquareFunction).toHaveBeenCalledWith(value)
+    expect(mockUtilitySquareFunction).toHaveBeenCalledWith([value])
 }
 ",
     ],
