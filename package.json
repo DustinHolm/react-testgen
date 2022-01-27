@@ -28,6 +28,7 @@
   "scripts": {
     "start": "node bin/react-testgen",
     "build": "tsc",
+    "prepare": "npm run build",
     "test": "jest --watch --coverage"
   },
   "dependencies": {
