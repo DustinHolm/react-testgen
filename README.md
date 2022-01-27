@@ -79,7 +79,7 @@ function resetMockChild() {
     mockChild = jest.fn(() => mockChildReturn)
 }
 jest.mock("./Child", () => ({
-    __esmodule: true,
+    __esModule: true,
     default: (...args: any[]) => mockChild(args),
 }))
 
@@ -108,7 +108,7 @@ function thenChildIsRendered(expected: boolean) {
 }
 
 function thenChildWasCalledWith(props: any) {
-    expect(mockChild).toHaveBeenCalledWith(props)
+    expect(mockChild).toHaveBeenCalledWith([props])
 }
 ```
 
