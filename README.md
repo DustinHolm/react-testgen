@@ -3,6 +3,9 @@
 React-testgen is a CLI tool to quickly generate unit test scaffolds for 
 TypeScript-based React components.
 
+## Status
+Abandoned due to lack of real applicability. I am not committed enough to push this from prototype to MVP.
+
 ## Installation
 
 You can either install it globally by running
