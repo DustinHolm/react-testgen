@@ -1,6 +1,6 @@
 {
   "name": "react-testgen",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A generator that scaffolds unit tests for React components",
   "keywords": [
     "react",
@@ -14,13 +14,13 @@
   ],
   "author": "Dustin Holm",
   "license": "MIT",
-  "homepage": "https://github.com/react-testgen/react-testgen",
+  "homepage": "https://github.com/DustinHolm/react-testgen",
   "repository": {
     "type": "git",
-    "url": "https://github.com/react-testgen/react-testgen.git"
+    "url": "https://github.com/DustinHolm/react-testgen.git"
   },
   "bugs": {
-    "url": "https://github.com/react-testgen/react-testgen/issues"
+    "url": "https://github.com/DustinHolm/react-testgen/issues"
   },
   "bin": {
     "react-testgen": "bin/react-testgen"
